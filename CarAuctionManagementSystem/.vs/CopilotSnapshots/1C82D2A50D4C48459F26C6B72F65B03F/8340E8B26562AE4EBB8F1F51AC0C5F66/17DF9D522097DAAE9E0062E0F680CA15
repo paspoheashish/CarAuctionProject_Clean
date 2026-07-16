@@ -1,0 +1,30 @@
+﻿using AuctionService.Infrastructure.Clients;
+using Moq;
+using Moq.Protected;
+using NUnit.Framework;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
+
+namespace AuctionService.Test
+{
+    public class ItemServiceClientTests
+    {
+        [Test]
+        public async Task VehicleExists_ReturnsTrueOn200()
+        {
+            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+            handlerMock
+               .Protected()
+               .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<System.Threading.CancellationToken>())
+               .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK))
+               .Verifiable();
+
+            var http = new HttpClient(handlerMock.Object);
+            var client = new ItemServiceClient(http);
+
+            var res = await client.VehicleExists(1);
+            Assert.That(res, Is.True);
+        }
+    }
+}

@@ -1,0 +1,55 @@
+﻿using AutoMapper;
+using CarAuctionManagementSystem.Application.Interfaces.Services;
+using CarAuctionManagementSystem.Domain.Entities;
+using CarAuctionManagementSystem.Domain.Enums;
+using CarAuctionManagementSystem.DTOs.Vehicles;
+using CarAuctionManagementSystem.Mapping;
+using Microsoft.AspNetCore.Mvc;
+
+namespace CarAuctionManagementSystem.Controllers
+{
+    [ApiController]
+    [Route("api/vehicles")]
+    public class VehiclesController : ControllerBase
+    {
+        private readonly IVehicleService _service;
+        private readonly IMapper _mapper;
+
+        public VehiclesController(IVehicleService service, IMapper mapper)
+        {
+            _service = service;
+            _mapper = mapper;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddVehicle(CreateVehicleRequest request)
+        {
+            var ownerUserId = Request.Headers.TryGetValue("X-User-Id", out var userId) ? userId.ToString() : string.Empty;
+            ownerUserId = "owner1";
+
+            if (string.IsNullOrEmpty(ownerUserId))
+            {
+                return BadRequest("Missing X-User-Id header.");
+            }
+
+            request.OwnerUserId = ownerUserId;
+
+            var vehicle = _mapper.Map<Vehicle>(request);
+
+            await _service.AddVehicleAsync(vehicle);
+            
+            return Ok(new { vehicle.Id });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Search([FromQuery] SearchVehiclesRequest request)
+        {
+            var vehicleType = Enum.TryParse<VehicleType>(request.Type, true, out var parsedType) ? parsedType : (VehicleType?)null;
+            var vehicles = await _service.SearchAsync(vehicleType, request.Manufacturer, request.Model, request.Year);
+
+            var result = _mapper.Map<List<VehicleResponse>>(vehicles);
+
+            return Ok(result);
+        }
+    }
+}

@@ -1,0 +1,30 @@
+﻿using CarAuctionManagementSystem.Application.Interfaces.Repositories;
+using CarAuctionManagementSystem.Domain.Entities;
+using CarAuctionManagementSystem.Infrastructure.DataBase;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CarAuctionManagementSystem.Infrastructure.Repositories
+{
+    public sealed class BidRepository : IBidRepository
+    {
+        private readonly List<Auction> _auctions = InMemoryDatabase.Auctions;
+
+        public Task AddAsync(Bid bid)
+        {
+            var existingAuction = _auctions.First(x => x.Id == bid.AuctionId);
+            existingAuction.Bids.Add(bid);
+            existingAuction.CurrentHighestBid = bid.Amount;
+            return Task.CompletedTask;
+        }
+
+        public Task<IEnumerable<Bid>> GetByAuctionIdAsync(int auctionId)
+        {
+            var existingAuction = _auctions.First(x => x.Id == auctionId);
+            return Task.FromResult(existingAuction.Bids.AsEnumerable());
+        }
+    }
+}

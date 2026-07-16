@@ -1,0 +1,222 @@
+﻿# CarAuctionManagementSystem
+
+A simple in-memory car auction management API built with .NET 8. The solution demonstrates a clean architecture split into Presentation, Application, Domain and Infrastructure layers, with MediatR for use-case handlers and AutoMapper for DTO mappings.
+
+## Project structure
+
+- Controllers/ - ASP.NET Core API controllers (Vehicles, Auctions, Bids)
+- DTOs/ - Request and response DTOs used by controllers
+- Mapping/ - AutoMapper profiles and converters
+- CarAuctionManagementSystem.Application/ - Application services, use cases (handlers), interfaces
+- CarAuctionManagementSystem.Domain/ - Domain entities and enums
+- CarAuctionManagementSystem.Infrastructure/ - In-memory database and repository implementations
+- MiddleWare/ - Centralized exception handling middleware
+- Program.cs - application bootstrap and DI registration
+
+## Key technologies
+
+- .NET 8
+- ASP.NET Core minimal host
+- MediatR (request/handler pattern)
+- AutoMapper for DTO ↔ Domain conversions
+- In-memory datastore (InMemoryDatabase) for demo purposes
+- Swagger/OpenAPI exposed by default
+
+## Getting started
+
+Prerequisites:
+- .NET 8 SDK
+- Visual Studio 2022/2026 or VS Code (or `dotnet` CLI)
+- (Optional) Docker Engine (for containerized runs)
+
+Run with Visual Studio:
+- Open `CarAuctionManagementSystem.slnx` and run (F5) or Start Without Debugging (Ctrl+F5).
+
+Run with dotnet CLI:
+
+- From repository root:
+  - `dotnet run --project CarAuctionManagementSystem.csproj`
+  - The API will start and Swagger UI is enabled at `/swagger`.
+
+Run with Docker (see Docker section below):
+
+## Configuration & DI
+
+- Program.cs registers 3 service registrations:
+  - Presentation (controllers, AutoMapper, Swagger)
+  - Application (services, MediatR handlers)
+  - Infrastructure (repositories, unit of work)
+
+- Repositories are registered as singletons and use `InMemoryDatabase` which is seeded with sample vehicles.
+
+- Exception handling is centralized via `MiddleWare/ExceptionMiddleware.cs` which converts ApplicationException to 400 and other exceptions to 500 with Problem Details.
+
+## Seed data
+
+The in-memory database is seeded with 20 vehicles across Hatchback, Sedan, SUV and Truck types in `Infrastructure/Database/InMemoryDatabase.cs`.
+Auctions start empty; use the API to create/start auctions and place bids.
+
+## API Endpoints
+
+Base path: `/api`
+
+Vehicles
+- POST /api/vehicles
+  - Description: Add a vehicle. Body: `CreateVehicleRequest` (see DTOs)
+  - Requires header `X-User-Id` (controllers currently override header with a hardcoded value; see TODO).
+  - Example:
+
+  curl -X POST "http://localhost:5000/api/vehicles" -H "Content-Type: application/json" -d \
+  '{
+    "id": 21,
+    "type": "hatchback",
+    "manufacturer": "Toyota",
+    "model": "Yaris",
+    "year": 2022,
+    "startingBid": 4500,
+    "numberOfDoors": 4
+  }'
+
+- GET /api/vehicles?Type={type}&Manufacturer={man}&Model={model}&Year={year}
+  - Description: Search vehicles. All query parameters optional.
+  - Example: `GET /api/vehicles?Type=sedan&Manufacturer=Toyota`
+
+Auctions
+- GET /api/auctions/all
+  - Returns all auctions.
+
+- GET /api/auctions/allactive
+  - Returns active auctions.
+
+- GET /api/auctions/{auctionId}
+  - Returns a single auction by id.
+
+- GET /api/auctions/vehicle/{vehicleId}
+  - Returns auction associated with a vehicle.
+
+- POST /api/auctions/start
+  - Body: `StartAuctionRequest` { "vehicleId": <id> }
+  - Starts auction for vehicle. Requires `X-User-Id` header (controller currently sets owner to `owner1`).
+  - Example:
+    curl -X POST "http://localhost:5000/api/auctions/start" -H "Content-Type: application/json" -d '{"vehicleId":1}'
+
+- POST /api/auctions/close
+  - Body: `CloseAuctionRequest` { "auctionId": <id> }
+  - Closes the auction. Requires `X-User-Id` header (controller currently sets owner to `owner1`).
+
+Bids
+- POST /api/bids/place
+  - Body: `PlaceBidRequest` { "auctionId": <id>, "bidderUserId": "userX", "amount": 5000 }
+  - Example:
+    curl -X POST "http://localhost:5000/api/bids/place" -H "Content-Type: application/json" -d '{"auctionId":1,"bidderUserId":"bidder1","amount":3600}'
+
+- GET /api/bids/{auctionId}
+  - Returns bids for a specific auction.
+
+## Design notes
+
+- The application follows a layered approach:
+  - Controllers act as presentation layer and coordinate with Application services or MediatR requests.
+  - Application layer defines service interfaces, MediatR handlers, DTOs, and mapping profiles.
+  - Infrastructure layer contains repository implementations and the in-memory database.
+  - Domain layer contains entities and enums.
+
+- MediatR is used for bids and auction queries; Application Services (IAuctionService / IVehicleService) contain business workflows for starting/closing auctions and adding vehicles.
+
+## Known issues / TODOs
+
+- Controllers currently read `X-User-Id` from headers but then override it with a hardcoded value (`owner1`). Update controllers to trust the header value and validate it properly.
+- In-memory persistence is for demo only. Replace with EF Core or another persistent store for production.
+- Unit tests are not included. Consider adding tests for services and handlers.
+
+## Development
+
+This project is simple to run and debug locally. The following instructions cover common development workflows.
+
+Prerequisites:
+- .NET 8 SDK
+- Visual Studio 2022/2026 (recommended) or VS Code + C# extension
+
+Local build & run
+1. From solution root, restore and build:
+   - `dotnet restore`
+   - `dotnet build`
+2. Run the API:
+   - `dotnet run --project CarAuctionManagementSystem.csproj`
+3. Open the Swagger UI at `http://localhost:5000/swagger` (port may vary).
+
+Debugging in Visual Studio
+1. Open the solution `CarAuctionManagementSystem.slnx`.
+2. Set breakpoints in controllers, services, or handlers.
+3. Press F5 to run in Debug mode. Use Locals/Watch windows to inspect state.
+
+Debugging with `dotnet` CLI and VS Code
+1. Use `dotnet build` and `dotnet run` to start the server.
+2. Attach the VS Code debugger to the running process or use the C# extension launch configuration to start and debug.
+
+Hot reload
+- When running via Visual Studio or `dotnet watch` hot reload, code changes can be applied without restarting the process. To use CLI hot reload:
+  - `dotnet watch run --project CarAuctionManagementSystem.csproj`
+
+Troubleshooting
+- If AutoMapper mapping errors occur, ensure mapping profiles are registered in `PresentationServiceRegistration.AddPresentation` and that DTO types match domain models.
+- If MediatR handlers are not discovered, ensure `AddMediatR(...)` in `ApplicationServiceRegistration` targets the correct handler assembly.
+- If controllers do not pick up header values, check request headers and controller logic (current controllers override header with a hardcoded value).
+
+## Running in Docker
+
+This repository can be containerized. Below are example Dockerfile and docker-compose snippets and commands.
+
+Dockerfile (example)
+
+```dockerfile
+# Use official .NET runtime for build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+COPY . ./
+RUN dotnet restore
+RUN dotnet publish CarAuctionManagementSystem.csproj -c Release -o /app/publish
+
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+WORKDIR /app
+COPY --from=build /app/publish ./
+EXPOSE 80
+ENTRYPOINT ["dotnet", "CarAuctionManagementSystem.dll"]
+```
+
+docker-compose.yml (example)
+
+```yaml
+version: '3.8'
+services:
+  car-auction-api:
+    build: .
+    ports:
+      - "5000:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+```
+
+Build and run with Docker
+
+- Build image: `docker build -t car-auction-api .`
+- Run container: `docker run -p 5000:80 car-auction-api`
+- Or with docker-compose: `docker-compose up --build`
+
+Notes
+- The in-memory database is not persisted across container restarts.
+- Update port mappings if 80 or 5000 is already in use.
+
+## Contributing
+
+Contributions are welcome. Please open issues or PRs against the GitHub repository: https://github.com/paspoheashish/CarAuctionManagementSystem_1
+
+## License
+
+This repository does not include an explicit license file. Add an appropriate LICENSE (e.g., MIT) if you want to make the project open source.
+
+If you'd like, I can now:
+- Add the Dockerfile and docker-compose.yml to the repo,
+- Add a GitHub Actions workflow to build the project on push,
+- Create a Postman collection with example requests,
+- Add CONTRIBUTING.md and LICENSE files.

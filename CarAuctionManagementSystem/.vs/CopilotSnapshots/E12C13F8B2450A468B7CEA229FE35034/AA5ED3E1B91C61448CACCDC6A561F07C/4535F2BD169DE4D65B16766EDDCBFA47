@@ -1,0 +1,33 @@
+﻿using CarAuctionManagementSystem.Application.Interfaces.Repositories;
+using CarAuctionManagementSystem.Domain.Entities;
+using MediatR;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CarAuctionManagementSystem.Application.UseCases.Auctions.Query
+{
+    public class GetAllActiveAuctionsHandler
+    : IRequestHandler<GetAllActiveAuctionsQuery, List<Auction>>
+    {
+        private readonly IUnitOfWork _uow;
+
+        public GetAllActiveAuctionsHandler(IUnitOfWork uow)
+        {
+            _uow = uow;
+        }
+
+        public async Task<List<Auction>> Handle(GetAllActiveAuctionsQuery request, CancellationToken cancellationToken)
+        {
+            var auctions = await _uow.Auctions.GetAllActiveAsync();
+
+            if (auctions == null || !auctions.Any())
+                throw new ApplicationException("No active auction is available at the moment.");
+
+            return auctions;
+        }
+    }
+
+}

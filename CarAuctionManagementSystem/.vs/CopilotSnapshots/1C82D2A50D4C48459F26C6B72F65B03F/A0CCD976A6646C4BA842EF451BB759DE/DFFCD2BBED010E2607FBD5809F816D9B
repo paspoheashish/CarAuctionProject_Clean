@@ -1,0 +1,127 @@
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using ItemService.Application.DTOs;
+using ItemService.Application.Interfaces;
+using ItemService.Application.Services;
+using ItemService.Domain.Entities;
+using Moq;
+using NUnit.Framework;
+using ItemService.Application.Interfaces;
+
+namespace ItemService.Test
+{
+    public class VechicleServiceTests
+    {
+        private Mock<IUnitOfWork> _uowMock = null!;
+        private Mock<IVehicleRepository> _repoMock = null!;
+        private VechicleService _service = null!;
+
+        [SetUp]
+        public void Setup()
+        {
+            _uowMock = new Mock<IUnitOfWork>();
+            _repoMock = new Mock<IVehicleRepository>();
+            _service = new VechicleService(_uowMock.Object, _repoMock.Object);
+        }
+
+        [Test]
+        public async Task AddVehicleAsync_Adds_Hatchback_With_Defaults()
+        {
+            var dto = new AddVehicleDto { Id = 1, Type = "Hatchback", Manufacturer = "M", Model = "X", Year = 2020, StartingBid = 100m };
+            _repoMock.Setup(r => r.GetAsync(dto.Id)).ReturnsAsync((Vehicle?)null);
+
+            Vehicle result = await _service.AddVehicleAsync(dto);
+
+            Assert.IsInstanceOf<Hatchback>(result);
+            Assert.AreEqual(4, ((Hatchback)result).NumberOfDoors);
+            _repoMock.Verify(r => r.AddVehicleAsync(It.IsAny<Vehicle>()), Times.Once);
+            _uowMock.Verify(u => u.SaveAsync(), Times.Once);
+        }
+
+        [Test]
+        public async Task AddVehicleAsync_Adds_Sedan_With_Specified_Doors()
+        {
+            var dto = new AddVehicleDto { Id = 2, Type = "Sedan", Manufacturer = "M", Model = "S", Year = 2021, StartingBid = 200m, NumberOfDoors = 2 };
+            _repoMock.Setup(r => r.GetAsync(dto.Id)).ReturnsAsync((Vehicle?)null);
+
+            Vehicle result = await _service.AddVehicleAsync(dto);
+
+            Assert.IsInstanceOf<Sedan>(result);
+            Assert.AreEqual(2, ((Sedan)result).NumberOfDoors);
+            _repoMock.Verify(r => r.AddVehicleAsync(It.IsAny<Vehicle>()), Times.Once);
+            _uowMock.Verify(u => u.SaveAsync(), Times.Once);
+        }
+
+        [Test]
+        public async Task AddVehicleAsync_Adds_SUV_With_Default_Seats()
+        {
+            var dto = new AddVehicleDto { Id = 3, Type = "SUV", Manufacturer = "M", Model = "V", Year = 2019, StartingBid = 300m };
+            _repoMock.Setup(r => r.GetAsync(dto.Id)).ReturnsAsync((Vehicle?)null);
+
+            Vehicle result = await _service.AddVehicleAsync(dto);
+
+            Assert.IsInstanceOf<SUV>(result);
+            Assert.AreEqual(5, ((SUV)result).NumberOfSeats);
+            _repoMock.Verify(r => r.AddVehicleAsync(It.IsAny<Vehicle>()), Times.Once);
+            _uowMock.Verify(u => u.SaveAsync(), Times.Once);
+        }
+
+        [Test]
+        public async Task AddVehicleAsync_Adds_Truck_With_Default_Load()
+        {
+            var dto = new AddVehicleDto { Id = 4, Type = "Truck", Manufacturer = "M", Model = "T", Year = 2018, StartingBid = 400m };
+            _repoMock.Setup(r => r.GetAsync(dto.Id)).ReturnsAsync((Vehicle?)null);
+
+            Vehicle result = await _service.AddVehicleAsync(dto);
+
+            Assert.IsInstanceOf<Truck>(result);
+            Assert.AreEqual(1000, ((Truck)result).LoadCapacity);
+            _repoMock.Verify(r => r.AddVehicleAsync(It.IsAny<Vehicle>()), Times.Once);
+            _uowMock.Verify(u => u.SaveAsync(), Times.Once);
+        }
+
+        [Test]
+        public void AddVehicleAsync_Throws_On_Duplicate_Id()
+        {
+            var dto = new AddVehicleDto { Id = 5, Type = "Hatchback", Manufacturer = "M", Model = "D", Year = 2017, StartingBid = 10m };
+            _repoMock.Setup(r => r.GetAsync(dto.Id)).ReturnsAsync(new Hatchback { Id = 5 });
+
+            Assert.ThrowsAsync<Exception>(async () => await _service.AddVehicleAsync(dto));
+            _repoMock.Verify(r => r.AddVehicleAsync(It.IsAny<Vehicle>()), Times.Never);
+            _uowMock.Verify(u => u.SaveAsync(), Times.Never);
+        }
+
+        [Test]
+        public void AddVehicleAsync_Throws_On_Invalid_Type()
+        {
+            var dto = new AddVehicleDto { Id = 6, Type = "Bike", Manufacturer = "M", Model = "B", Year = 2016, StartingBid = 50m };
+            _repoMock.Setup(r => r.GetAsync(dto.Id)).ReturnsAsync((Vehicle?)null);
+
+            Assert.ThrowsAsync<Exception>(async () => await _service.AddVehicleAsync(dto));
+            _repoMock.Verify(r => r.AddVehicleAsync(It.IsAny<Vehicle>()), Times.Never);
+            _uowMock.Verify(u => u.SaveAsync(), Times.Never);
+        }
+
+        [Test]
+        public async Task SearchAsync_Delegates_To_Repository()
+        {
+            var expected = new List<Vehicle> { new Hatchback { Id = 7 } };
+            _repoMock.Setup(r => r.SearchAsync("Hatchback", "M", "X", 2020)).ReturnsAsync(expected);
+
+            var result = await _service.SearchAsync("Hatchback", "M", "X", 2020);
+
+            Assert.AreSame(expected, result);
+        }
+
+        [Test]
+        public async Task GetAsync_Delegates_To_Repository()
+        {
+            var expected = new Sedan { Id = 8 };
+            _repoMock.Setup(r => r.GetAsync(8)).ReturnsAsync(expected);
+
+            var result = await _service.GetAsync(8);
+
+            Assert.AreSame(expected, result);
+        }
+    }
+}

@@ -1,0 +1,38 @@
+﻿using CarAuctionManagementSystem.Application.Interfaces.Repositories;
+using CarAuctionManagementSystem.Domain.Entities;
+using MediatR;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CarAuctionManagementSystem.Application.UseCases.Auctions.Query
+{
+    public class GetAuctionByVehicleIdHandler
+        : IRequestHandler<GetAuctionByVehicleIdQuery, Auction>
+    {
+        private readonly IUnitOfWork _uow;
+
+        public GetAuctionByVehicleIdHandler(IUnitOfWork uow)
+        {
+            _uow = uow;
+        }
+
+        public async Task<Auction> Handle(GetAuctionByVehicleIdQuery request, CancellationToken cancellationToken)
+        {
+            var vehicle = await _uow.Vehicles.GetByIdAsync(request.VehicleId);
+
+            if (vehicle == null)
+                throw new ApplicationException("Vehicle not found.");
+
+            var auction = await _uow.Auctions.GetByVehicleIdAsync(request.VehicleId);
+
+            if (auction == null)
+                throw new ApplicationException("Auction not found.");
+
+            return auction;
+        }
+    }
+
+}

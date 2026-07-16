@@ -1,0 +1,35 @@
+﻿using AuctionService.Domain.Entities;
+using AuctionService.Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
+using NUnit.Framework;
+using System.Threading.Tasks;
+
+namespace AuctionService.Test
+{
+    public class BidRepositoryTests
+    {
+        private DbContextOptions<AppDbContext> _options = null!;
+
+        [SetUp]
+        public void Setup()
+        {
+            _options = new DbContextOptionsBuilder<AppDbContext>()
+                .UseInMemoryDatabase(databaseName: "TestDb_BidRepo")
+                .Options;
+        }
+
+        [Test]
+        public async Task GetBidsForAuction_Returns_List()
+        {
+            using var ctx = new AppDbContext(_options);
+            ctx.Bids.Add(new Bid { Id = 3, AuctionId = 3, Amount = 100, Bidder = 2 });
+            await ctx.SaveChangesAsync();
+
+            var repo = new BidRepository(ctx);
+            var res = await repo.GetBidsForAuction(3);
+
+            Assert.That(res, Is.Not.Null);
+            Assert.That(res.Count, Is.EqualTo(1));
+        }
+    }
+}

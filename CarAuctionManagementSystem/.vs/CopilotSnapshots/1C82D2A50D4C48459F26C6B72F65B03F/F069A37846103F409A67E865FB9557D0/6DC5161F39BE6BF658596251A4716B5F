@@ -1,0 +1,56 @@
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using ItemService.Application.DTOs;
+using ItemService.Application.Interfaces;
+using ItemService.Controllers;
+using ItemService.Domain.Entities;
+using Microsoft.AspNetCore.Mvc;
+using Moq;
+using NUnit.Framework;
+
+namespace ItemService.Test
+{
+    public class ItemsControllerTests
+    {
+        private Mock<IVechicleService> _serviceMock = null!;
+        private ItemsController _controller = null!;
+
+        [SetUp]
+        public void Setup()
+        {
+            _serviceMock = new Mock<IVechicleService>();
+            _controller = new ItemsController(_serviceMock.Object);
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            if (_controller is System.IDisposable d)
+                d.Dispose();
+            _controller = null!;
+        }
+
+        [Test]
+        public async Task AddVehicle_WhenOk_ReturnsVehicle()
+        {
+            var dto = new AddVehicleDto { Id = 1, Type = "Hatchback", Manufacturer = "VW", Model = "Polo", Year = 2020, StartingBid = 100m };
+            var vehicle = new Hatchback { Id = 1 };
+            _serviceMock.Setup(s => s.AddVehicleAsync(dto)).ReturnsAsync(vehicle);
+
+            var result = await _controller.Add(dto);
+            Assert.That(result, Is.TypeOf<OkObjectResult>());
+            var obj = ((OkObjectResult)result).Value!;
+            Assert.That(obj, Is.SameAs(vehicle));
+        }
+
+        [Test]
+        public async Task GetVehicle_WhenMissing_ReturnsNull()
+        {
+            _serviceMock.Setup(s => s.GetAsync(5)).ReturnsAsync((Vehicle?)null);
+            var result = await _controller.Get(5);
+            Assert.That(result, Is.TypeOf<OkObjectResult>());
+            var obj = ((OkObjectResult)result).Value!;
+            Assert.That(obj, Is.Null);
+        }
+    }
+}

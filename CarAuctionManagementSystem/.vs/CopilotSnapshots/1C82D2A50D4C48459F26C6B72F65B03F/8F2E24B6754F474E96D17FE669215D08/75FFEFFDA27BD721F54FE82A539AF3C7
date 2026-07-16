@@ -1,0 +1,87 @@
+﻿using AuctionService.Domain.Entities;
+using AuctionService.Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
+using NUnit.Framework;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
+using AuctionService.Application.Interfaces;
+using Moq;
+
+namespace AuctionService.Test
+{
+    public class RepositoriesTests
+    {
+        private DbContextOptions<AppDbContext> _options = null!;
+
+        [SetUp]
+        public void Setup()
+        {
+            _options = new DbContextOptionsBuilder<AppDbContext>()
+                .UseInMemoryDatabase(databaseName: "TestDb")
+                .Options;
+        }
+
+        [Test]
+        public async Task AuctionRepository_Add_And_Get()
+        {
+            using var ctx = new AppDbContext(_options);
+            var repo = new AuctionRepository(ctx);
+
+            var auction = new Auction { Id = 1, VehicleId = 10, IsActive = true };
+            await repo.Add(auction);
+
+            var got = await repo.Get(1);
+            Assert.That(got, Is.Not.Null);
+            Assert.That(got!.VehicleId, Is.EqualTo(10));
+        }
+
+        [Test]
+        public async Task AuctionRepository_GetAuctionWithBids_Returns_Bids()
+        {
+            using var ctx = new AppDbContext(_options);
+            ctx.Bids.Add(new Bid { Id = 2, AuctionId = 2, Amount = 50, Bidder = 1 });
+            ctx.Auctions.Add(new Auction { Id = 2, VehicleId = 20, IsActive = true });
+            await ctx.SaveChangesAsync();
+
+            var repo = new AuctionRepository(ctx);
+            var res = await repo.GetAuctionWithBids(2);
+
+            Assert.That(res, Is.Not.Null);
+            Assert.That(res!.Bids, Is.Not.Null);
+            Assert.That(res.Bids.Count, Is.GreaterThanOrEqualTo(0));
+        }
+
+        [Test]
+        public async Task BidRepository_GetBidsForAuction_Returns_List()
+        {
+            using var ctx = new AppDbContext(_options);
+            ctx.Bids.Add(new Bid { Id = 3, AuctionId = 3, Amount = 100, Bidder = 2 });
+            await ctx.SaveChangesAsync();
+
+            var repo = new BidRepository(ctx);
+            var res = await repo.GetBidsForAuction(3);
+
+            Assert.That(res, Is.Not.Null);
+            Assert.That(res.Count, Is.EqualTo(1));
+        }
+
+        [Test]
+        public async Task ItemServiceClient_VehicleExists_ReturnsTrueWhen200()
+        {
+            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+            handlerMock
+               .Protected()
+               .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<System.Threading.CancellationToken>())
+               .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK))
+               .Verifiable();
+
+            var http = new HttpClient(handlerMock.Object);
+            var client = new AuctionService.Infrastructure.Clients.ItemServiceClient(http);
+
+            var res = await client.VehicleExists(1);
+            Assert.That(res, Is.True);
+        }
+    }
+}

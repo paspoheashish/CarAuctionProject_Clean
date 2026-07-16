@@ -1,0 +1,52 @@
+﻿using AuctionService.Domain.Entities;
+using AuctionService.Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
+using NUnit.Framework;
+using System.Threading.Tasks;
+
+namespace AuctionService.Test
+{
+    public class AuctionRepositoryTests
+    {
+        private DbContextOptions<AppDbContext> _options = null!;
+
+        [SetUp]
+        public void Setup()
+        {
+            _options = new DbContextOptionsBuilder<AppDbContext>()
+                .UseInMemoryDatabase(databaseName: "TestDb_AuctionRepo")
+                .Options;
+        }
+
+        [Test]
+        public async Task Add_And_Get_Auction()
+        {
+            using var ctx = new AppDbContext(_options);
+            var repo = new AuctionRepository(ctx);
+
+            var auction = new Auction { Id = 1, VehicleId = 10, IsActive = true };
+            await repo.Add(auction);
+            await ctx.SaveChangesAsync();
+
+            var got = await repo.Get(1);
+            NUnit.Framework.Assert.IsNotNull(got);
+            NUnit.Framework.Assert.AreEqual(10, got!.VehicleId);
+        }
+
+        [Test]
+        public async Task GetAuctionWithBids_Returns_Bids()
+        {
+            using var ctx = new AppDbContext(_options);
+            ctx.Bids.Add(new Bid { Id = 2, AuctionId = 2, Amount = 50, Bidder = 1 });
+            ctx.Auctions.Add(new Auction { Id = 2, VehicleId = 20, IsActive = true });
+            await ctx.SaveChangesAsync();
+
+            var repo = new AuctionRepository(ctx);
+            var res = await repo.GetAuctionWithBids(2);
+
+            NUnit.Framework.Assert.IsNotNull(res);
+            NUnit.Framework.Assert.IsNotNull(res!.Bids);
+            NUnit.Framework.Assert.IsTrue(res.Bids.Count >= 0);
+        }
+    }
+}

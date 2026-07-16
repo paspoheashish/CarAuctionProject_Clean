@@ -1,0 +1,51 @@
+﻿using Moq;
+using NUnit.Framework;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using UserService.Application.Interfaces.Repositories;
+using UserService.Application.DTOs;
+using UserService.Application.Services;
+using UserService.Domain.Entities;
+using UserService.Controllers;
+
+namespace UserService.Test
+{
+    [TestFixture]
+    public class UsersControllerTests
+    {
+        private Mock<IUserRepository> _userRepositoryMock = null!;
+        private Mock<UserService.Application.Interfaces.Repositories.IUnitOfWork> _unitOfWorkMock = null!;
+        private UserService.Application.Services.UserService _service = null!;
+        private UsersController _controller = null!;
+
+        [SetUp]
+        public void SetUp()
+        {
+            _userRepositoryMock = new Mock<IUserRepository>();
+            _unitOfWorkMock = new Mock<UserService.Application.Interfaces.Repositories.IUnitOfWork>();
+            _service = new UserService.Application.Services.UserService(_unitOfWorkMock.Object, _userRepositoryMock.Object);
+            _controller = new UsersController(_service);
+        }
+
+        [Test]
+        public async Task GetUser_WhenNotFound_ReturnsMessage()
+        {
+            _userRepositoryMock.Setup(r => r.GetByEmailAsync(It.IsAny<string>())).ReturnsAsync((User?)null);
+            var result = await _controller.GetUser("no@no.com");
+            Assert.That(TestHelpers.GetMessage(result), Is.EqualTo("User not found."));
+        }
+
+        [Test]
+        public async Task Register_WhenNew_ReturnsCreated()
+        {
+            var dto = new CreateUserDto { FirstName = "A", LastName = "B", Email = "new@e.com", Password = "p" };
+            _userRepositoryMock.Setup(r => r.GetByEmailAsync(dto.Email)).ReturnsAsync((User?)null);
+            _userRepositoryMock.Setup(r => r.AddAsync(It.IsAny<User>())).Returns(Task.CompletedTask).Callback<User>(u => { typeof(User).GetProperty("Id")!.SetValue(u, 99L); });
+            _unitOfWorkMock.Setup(u => u.SaveAsync()).ReturnsAsync(1);
+
+            var res = await _controller.Register(dto);
+            var obj = TestHelpers.GetOkValue<object>(res)!;
+            Assert.That(TestHelpers.GetProp<string>(obj, "Email"), Is.EqualTo(dto.Email));
+        }
+    }
+}

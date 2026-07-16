@@ -1,0 +1,58 @@
+﻿using AuctionService.Domain.Entities;
+using AuctionService.Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
+using NUnit.Framework;
+using System.Threading.Tasks;
+
+namespace AuctionService.Test
+{
+    public class AuctionRepositoryTests
+    {
+        private DbContextOptions<AppDbContext> _options = null!;
+
+        [SetUp]
+        public void Setup()
+        {
+            _options = new DbContextOptionsBuilder<AppDbContext>()
+                .UseInMemoryDatabase(databaseName: "TestDb_AuctionRepo")
+                .Options;
+        }
+
+        [Test]
+        public async Task Simple_Add_And_Get_Auction()
+        {
+            // Arrange: create in-memory context and repo
+            using var ctx = new AppDbContext(_options);
+            var repo = new AuctionRepository(ctx);
+
+            // Act: add and save an auction
+            var auction = new Auction { Id = 1, VehicleId = 10, IsActive = true };
+            await repo.Add(auction);
+            await ctx.SaveChangesAsync();
+
+            // Assert: we can read it back
+            var got = await repo.Get(1);
+            Assert.That(got, Is.Not.Null);
+            Assert.That(got!.VehicleId, Is.EqualTo(10));
+        }
+
+        [Test]
+        public async Task Simple_GetAuctionWithBids_Returns_Bids()
+        {
+            // Arrange: seed data with bids
+            using var ctx = new AppDbContext(_options);
+            ctx.Bids.Add(new Bid { Id = 2, AuctionId = 2, Amount = 50, Bidder = 1 });
+            ctx.Auctions.Add(new Auction { Id = 2, VehicleId = 20, IsActive = true });
+            await ctx.SaveChangesAsync();
+
+            // Act: fetch auction with bids
+            var repo = new AuctionRepository(ctx);
+            var res = await repo.GetAuctionWithBids(2);
+
+            // Assert: we got something and it has bids
+            Assert.That(res, Is.Not.Null);
+            Assert.That(res!.Bids, Is.Not.Null);
+            Assert.That(res.Bids.Count, Is.GreaterThanOrEqualTo(0));
+        }
+    }
+}

@@ -1,0 +1,250 @@
+﻿Test run completed. Ran 51 test(s). 45 Passed, 6 Failed 
+Bid_ReturnsConflict_When_Service_Throws Passed
+Get_ReturnsNotFound_When_Null Passed
+Get_ReturnsOk_When_Found Passed
+SearchAsync_Delegates_To_Repository Passed
+Register_ReturnsConflict_WhenEmailAlreadyExists Passed
+Bid_ReturnsOk_When_Succeeds Passed
+GetByEmailAsync_ReturnsUser_WhenFound Passed
+CloseAuctionAsync_Throws_When_AlreadyClosed Passed
+AuthController_Login_Returns_Unauthorized_When_Invalid Passed
+Start_ReturnsOk_When_Succeeds Passed
+Get_ReturnsOk_With_Null_When_NotFound Passed
+Get_ReturnsOk_With_Vehicle Passed
+Add_ReturnsConflict_When_Service_Throws Passed
+AuthorizationService_Calls_Client Failed | Error: System.NotSupportedException : Unsupported expression: h => h.ValidateCredentials("a@b.com", "pwd")
+Non-overridable members (here: UserServiceClient.ValidateCredentials) may not be used in setup / verification expressions. | StackTrace:    at Moq.Guard.IsOverridable(MethodInfo method, Expression expression) in /_/src/Moq/Guard.cs:line 99
+   at Moq.MethodExpectation..ctor(LambdaExpression expression, MethodInfo method, IReadOnlyList`1 arguments, Boolean exactGenericTypeArguments, Boolean skipMatcherInitialization, Boolean allowNonOverridable) in /_/src/Moq/MethodExpectation.cs:line 236
+   at Moq.ExpressionExtensions.<Split>g__Split|5_0(Expression e, Expression& r, MethodExpectation& p, Boolean assignment, Boolean allowNonOverridableLastProperty) in /_/src/Moq/ExpressionExtensions.cs:line 240
+   at Moq.ExpressionExtensions.Split(LambdaExpression expression, Boolean allowNonOverridableLastProperty) in /_/src/Moq/ExpressionExtensions.cs:line 170
+   at Moq.Mock.SetupRecursive[TSetup](Mock mock, LambdaExpression expression, Func`4 setupLast, Boolean allowNonOverridableLastProperty) in /_/src/Moq/Mock.cs:line 728
+   at Moq.Mock.Setup(Mock mock, LambdaExpression expression, Condition condition) in /_/src/Moq/Mock.cs:line 562
+   at Moq.Mock`1.Setup[TResult](Expression`1 expression) in /_/src/Moq/Mock`1.cs:line 645
+   at AuthService.Test.AuthServiceTests.AuthorizationService_Calls_Client() in C:\Family\Ashish\Constellation\CarAuctionManagementSystem_Simple\AuthService.Test\AuthServiceTests.cs:line 34
+   at NUnit.Framework.Internal.TaskAwaitAdapter.GenericAdapter`1.GetResult()
+   at NUnit.Framework.Internal.AsyncToSyncAdapter.Await[TResult](TestExecutionContext context, Func`1 invoke)
+   at NUnit.Framework.Internal.AsyncToSyncAdapter.Await(TestExecutionContext context, Func`1 invoke)
+   at NUnit.Framework.Internal.Commands.TestMethodCommand.RunTestMethod(TestExecutionContext context)
+   at NUnit.Framework.Internal.Commands.TestMethodCommand.Execute(TestExecutionContext context)
+   at NUnit.Framework.Internal.Execution.SimpleWorkItem.<>c__DisplayClass3_0.<PerformWork>b__0()
+   at NUnit.Framework.Internal.ContextUtils.<>c__DisplayClass1_0`1.<DoIsolated>b__0(Object _)
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at NUnit.Framework.Internal.ContextUtils.DoIsolated(ContextCallback callback, Object state)
+   at NUnit.Framework.Internal.ContextUtils.DoIsolated[T](Func`1 func)
+   at NUnit.Framework.Internal.Execution.SimpleWorkItem.PerformWork()
+1)    at Moq.Guard.IsOverridable(MethodInfo method, Expression expression) in /_/src/Moq/Guard.cs:line 99
+   at Moq.MethodExpectation..ctor(LambdaExpression expression, MethodInfo method, IReadOnlyList`1 arguments, Boolean exactGenericTypeArguments, Boolean skipMatcherInitialization, Boolean allowNonOverridable) in /_/src/Moq/MethodExpectation.cs:line 236
+   at Moq.ExpressionExtensions.<Split>g__Split|5_0(Expression e, Expression& r, MethodExpectation& p, Boolean assignment, Boolean allowNonOverridableLastProperty) in /_/src/Moq/ExpressionExtensions.cs:line 240
+   at Moq.ExpressionExtensions.Split(LambdaExpression expression, Boolean allowNonOverridableLastProperty) in /_/src/Moq/ExpressionExtensions.cs:line 170
+   at Moq.Mock.SetupRecursive[TSetup](Mock mock, LambdaExpression expression, Func`4 setupLast, Boolean allowNonOverridableLastProperty) in /_/src/Moq/Mock.cs:line 728
+   at Moq.Mock.Setup(Mock mock, LambdaExpression expression, Condition condition) in /_/src/Moq/Mock.cs:line 562
+   at Moq.Mock`1.Setup[TResult](Expression`1 expression) in /_/src/Moq/Mock`1.cs:line 645
+   at AuthService.Test.AuthServiceTests.AuthorizationService_Calls_Client() in C:\Family\Ashish\Constellation\CarAuctionManagementSystem_Simple\AuthService.Test\AuthServiceTests.cs:line 34
+   at NUnit.Framework.Internal.TaskAwaitAdapter.GenericAdapter`1.GetResult()
+   at NUnit.Framework.Internal.AsyncToSyncAdapter.Await[TResult](TestExecutionContext context, Func`1 invoke)
+   at NUnit.Framework.Internal.AsyncToSyncAdapter.Await(TestExecutionContext context, Func`1 invoke)
+   at NUnit.Framework.Internal.Commands.TestMethodCommand.RunTestMethod(TestExecutionContext context)
+   at NUnit.Framework.Internal.Commands.TestMethodCommand.Execute(TestExecutionContext context)
+   at NUnit.Framework.Internal.Execution.SimpleWorkItem.<>c__DisplayClass3_0.<PerformWork>b__0()
+   at NUnit.Framework.Internal.ContextUtils.<>c__DisplayClass1_0`1.<DoIsolated>b__0(Object _)
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at NUnit.Framework.Internal.ContextUtils.DoIsolated(ContextCallback callback, Object state)
+   at NUnit.Framework.Internal.ContextUtils.DoIsolated[T](Func`1 func)
+   at NUnit.Framework.Internal.Execution.SimpleWorkItem.PerformWork()
+
+AuctionRepository_Add_And_Get Failed | Error: System.InvalidOperationException : Services for database providers 'Microsoft.EntityFrameworkCore.InMemory', 'Microsoft.EntityFrameworkCore.SqlServer' have been registered in the service provider. Only a single database provider can be registered in a service provider. If possible, ensure that Entity Framework is managing its service provider by removing the call to 'UseInternalServiceProvider'. Otherwise, consider conditionally registering the database provider, or maintaining one service provider per database provider. | StackTrace:    at Microsoft.EntityFrameworkCore.Internal.DbContextServices.Initialize(IServiceProvider scopedProvider, DbContextOptions contextOptions, DbContext context)
+   at Microsoft.EntityFrameworkCore.DbContext.get_ContextServices()
+   at Microsoft.EntityFrameworkCore.DbContext.get_InternalServiceProvider()
+   at Microsoft.EntityFrameworkCore.DbContext.get_DbContextDependencies()
+   at Microsoft.EntityFrameworkCore.DbContext.EntryWithoutDetectChanges[TEntity](TEntity entity)
+   at Microsoft.EntityFrameworkCore.DbContext.SetEntityState[TEntity](TEntity entity, EntityState entityState)
+   at Microsoft.EntityFrameworkCore.DbContext.Add[TEntity](TEntity entity)
+   at AuctionService.Infrastructure.Repositories.AuctionRepository.Add(Auction auction) in C:\Family\Ashish\Constellation\CarAuctionManagementSystem_Simple\AuctionService\Infrastructure\Repositories\AuctionRepository.cs:line 16
+   at AuctionService.Test.RepositoriesTests.AuctionRepository_Add_And_Get() in C:\Family\Ashish\Constellation\CarAuctionManagementSystem_Simple\AuctionService.Test\RepositoriesTests.cs:line 36
+   at NUnit.Framework.Internal.TaskAwaitAdapter.GenericAdapter`1.GetResult()
+   at NUnit.Framework.Internal.AsyncToSyncAdapter.Await[TResult](TestExecutionContext context, Func`1 invoke)
+   at NUnit.Framework.Internal.AsyncToSyncAdapter.Await(TestExecutionContext context, Func`1 invoke)
+   at NUnit.Framework.Internal.Commands.TestMethodCommand.RunTestMethod(TestExecutionContext context)
+   at NUnit.Framework.Internal.Commands.TestMethodCommand.Execute(TestExecutionContext context)
+   at NUnit.Framework.Internal.Commands.BeforeAndAfterTestCommand.<>c__DisplayClass1_0.<Execute>b__0()
+   at NUnit.Framework.Internal.Commands.DelegatingTestCommand.RunTestMethodInThreadAbortSafeZone(TestExecutionContext context, Action action)
+1)    at Microsoft.EntityFrameworkCore.Internal.DbContextServices.Initialize(IServiceProvider scopedProvider, DbContextOptions contextOptions, DbContext context)
+   at Microsoft.EntityFrameworkCore.DbContext.get_ContextServices()
+   at Microsoft.EntityFrameworkCore.DbContext.get_InternalServiceProvider()
+   at Microsoft.EntityFrameworkCore.DbContext.get_DbContextDependencies()
+   at Microsoft.EntityFrameworkCore.DbContext.EntryWithoutDetectChanges[TEntity](TEntity entity)
+   at Microsoft.EntityFrameworkCore.DbContext.SetEntityState[TEntity](TEntity entity, EntityState entityState)
+   at Microsoft.EntityFrameworkCore.DbContext.Add[TEntity](TEntity entity)
+   at AuctionService.Infrastructure.Repositories.AuctionRepository.Add(Auction auction) in C:\Family\Ashish\Constellation\CarAuctionManagementSystem_Simple\AuctionService\Infrastructure\Repositories\AuctionRepository.cs:line 16
+   at AuctionService.Test.RepositoriesTests.AuctionRepository_Add_And_Get() in C:\Family\Ashish\Constellation\CarAuctionManagementSystem_Simple\AuctionService.Test\RepositoriesTests.cs:line 36
+   at NUnit.Framework.Internal.TaskAwaitAdapter.GenericAdapter`1.GetResult()
+   at NUnit.Framework.Internal.AsyncToSyncAdapter.Await[TResult](TestExecutionContext context, Func`1 invoke)
+   at NUnit.Framework.Internal.AsyncToSyncAdapter.Await(TestExecutionContext context, Func`1 invoke)
+   at NUnit.Framework.Internal.Commands.TestMethodCommand.RunTestMethod(TestExecutionContext context)
+   at NUnit.Framework.Internal.Commands.TestMethodCommand.Execute(TestExecutionContext context)
+   at NUnit.Framework.Internal.Commands.BeforeAndAfterTestCommand.<>c__DisplayClass1_0.<Execute>b__0()
+   at NUnit.Framework.Internal.Commands.DelegatingTestCommand.RunTestMethodInThreadAbortSafeZone(TestExecutionContext context, Action action)
+
+Validate_ReturnsOk_WhenValid Passed
+AddVehicleAsync_Adds_Hatchback_With_Defaults Passed
+GetAuctionAsync_Delegates_To_Repository Passed
+AuctionRepository_GetAuctionWithBids_Returns_Bids Failed | Error: System.InvalidOperationException : Services for database providers 'Microsoft.EntityFrameworkCore.InMemory', 'Microsoft.EntityFrameworkCore.SqlServer' have been registered in the service provider. Only a single database provider can be registered in a service provider. If possible, ensure that Entity Framework is managing its service provider by removing the call to 'UseInternalServiceProvider'. Otherwise, consider conditionally registering the database provider, or maintaining one service provider per database provider. | StackTrace:    at Microsoft.EntityFrameworkCore.Internal.DbContextServices.Initialize(IServiceProvider scopedProvider, DbContextOptions contextOptions, DbContext context)
+   at Microsoft.EntityFrameworkCore.DbContext.get_ContextServices()
+   at Microsoft.EntityFrameworkCore.DbContext.get_InternalServiceProvider()
+   at Microsoft.EntityFrameworkCore.DbContext.get_DbContextDependencies()
+   at Microsoft.EntityFrameworkCore.DbContext.Microsoft.EntityFrameworkCore.Internal.IDbContextDependencies.get_StateManager()
+   at Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1.EntryWithoutDetectChanges(TEntity entity)
+   at Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1.Add(TEntity entity)
+   at AuctionService.Test.RepositoriesTests.AuctionRepository_GetAuctionWithBids_Returns_Bids() in C:\Family\Ashish\Constellation\CarAuctionManagementSystem_Simple\AuctionService.Test\RepositoriesTests.cs:line 47
+   at NUnit.Framework.Internal.TaskAwaitAdapter.GenericAdapter`1.GetResult()
+   at NUnit.Framework.Internal.AsyncToSyncAdapter.Await[TResult](TestExecutionContext context, Func`1 invoke)
+   at NUnit.Framework.Internal.AsyncToSyncAdapter.Await(TestExecutionContext context, Func`1 invoke)
+   at NUnit.Framework.Internal.Commands.TestMethodCommand.RunTestMethod(TestExecutionContext context)
+   at NUnit.Framework.Internal.Commands.TestMethodCommand.Execute(TestExecutionContext context)
+   at NUnit.Framework.Internal.Commands.BeforeAndAfterTestCommand.<>c__DisplayClass1_0.<Execute>b__0()
+   at NUnit.Framework.Internal.Commands.DelegatingTestCommand.RunTestMethodInThreadAbortSafeZone(TestExecutionContext context, Action action)
+1)    at Microsoft.EntityFrameworkCore.Internal.DbContextServices.Initialize(IServiceProvider scopedProvider, DbContextOptions contextOptions, DbContext context)
+   at Microsoft.EntityFrameworkCore.DbContext.get_ContextServices()
+   at Microsoft.EntityFrameworkCore.DbContext.get_InternalServiceProvider()
+   at Microsoft.EntityFrameworkCore.DbContext.get_DbContextDependencies()
+   at Microsoft.EntityFrameworkCore.DbContext.Microsoft.EntityFrameworkCore.Internal.IDbContextDependencies.get_StateManager()
+   at Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1.EntryWithoutDetectChanges(TEntity entity)
+   at Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1.Add(TEntity entity)
+   at AuctionService.Test.RepositoriesTests.AuctionRepository_GetAuctionWithBids_Returns_Bids() in C:\Family\Ashish\Constellation\CarAuctionManagementSystem_Simple\AuctionService.Test\RepositoriesTests.cs:line 47
+   at NUnit.Framework.Internal.TaskAwaitAdapter.GenericAdapter`1.GetResult()
+   at NUnit.Framework.Internal.AsyncToSyncAdapter.Await[TResult](TestExecutionContext context, Func`1 invoke)
+   at NUnit.Framework.Internal.AsyncToSyncAdapter.Await(TestExecutionContext context, Func`1 invoke)
+   at NUnit.Framework.Internal.Commands.TestMethodCommand.RunTestMethod(TestExecutionContext context)
+   at NUnit.Framework.Internal.Commands.TestMethodCommand.Execute(TestExecutionContext context)
+   at NUnit.Framework.Internal.Commands.BeforeAndAfterTestCommand.<>c__DisplayClass1_0.<Execute>b__0()
+   at NUnit.Framework.Internal.Commands.DelegatingTestCommand.RunTestMethodInThreadAbortSafeZone(TestExecutionContext context, Action action)
+
+StartAuctionAsync_Throws_When_ActiveAuctionExists Passed
+Close_ReturnsConflict_When_Service_Throws Passed
+PlaceBidAsync_Throws_When_NotActive Passed
+AuthController_Login_Returns_Token_When_Valid Passed
+ValidateAsync_ReturnsUser_WhenRepositoryReturnsUser Passed
+PlaceBidAsync_Adds_Bid_When_Valid Failed | Error:   Assert.That(res, Is.Not.Null)
+  Expected: not null
+  But was:  null
+ | StackTrace:    at AuctionService.Test.AuctionServiceTests.PlaceBidAsync_Adds_Bid_When_Valid() in C:\Family\Ashish\Constellation\CarAuctionManagementSystem_Simple\AuctionService.Test\AuctionServiceTests.cs:line 100
+   at NUnit.Framework.Internal.TaskAwaitAdapter.GenericAdapter`1.GetResult()
+   at NUnit.Framework.Internal.AsyncToSyncAdapter.Await[TResult](TestExecutionContext context, Func`1 invoke)
+   at NUnit.Framework.Internal.AsyncToSyncAdapter.Await(TestExecutionContext context, Func`1 invoke)
+   at NUnit.Framework.Internal.Commands.TestMethodCommand.RunTestMethod(TestExecutionContext context)
+   at NUnit.Framework.Internal.Commands.TestMethodCommand.Execute(TestExecutionContext context)
+   at NUnit.Framework.Internal.Commands.BeforeAndAfterTestCommand.<>c__DisplayClass1_0.<Execute>b__0()
+   at NUnit.Framework.Internal.Commands.DelegatingTestCommand.RunTestMethodInThreadAbortSafeZone(TestExecutionContext context, Action action)
+
+1)    at AuctionService.Test.AuctionServiceTests.PlaceBidAsync_Adds_Bid_When_Valid() in C:\Family\Ashish\Constellation\CarAuctionManagementSystem_Simple\AuctionService.Test\AuctionServiceTests.cs:line 100
+   at System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start[TStateMachine](TStateMachine& stateMachine)
+   at AuctionService.Test.AuctionServiceTests.PlaceBidAsync_Adds_Bid_When_Valid()
+
+
+GetUser_ReturnsOk_WhenUserFound Passed
+Validate_ReturnsUnauthorized_WhenInvalid Passed
+Register_ReturnsOk_WhenNewUser Passed
+PlaceBidAsync_Throws_When_BidTooLow Passed
+ItemServiceClient_VehicleExists_ReturnsTrueWhen200 Passed
+StartAuctionAsync_Throws_When_VehicleDoesNotExist Passed
+GetByEmailAsync_ReturnsNull_WhenNotFound Passed
+Add_ReturnsOk_When_Service_AddsVehicle Passed
+AddVehicleAsync_Adds_SUV_With_Default_Seats Passed
+AddVehicleAsync_Throws_On_Invalid_Type Passed
+Search_ReturnsOk_With_Data Passed
+GetAsync_Delegates_To_Repository Passed
+AddVehicleAsync_Adds_Sedan_With_Specified_Doors Passed
+GetUser_ReturnsNotFound_WhenUserDoesNotExist Passed
+StartAuctionAsync_CreatesAuction_When_VehicleExists_And_NoActiveAuction Passed
+BidRepository_GetBidsForAuction_Returns_List Failed | Error: System.InvalidOperationException : Services for database providers 'Microsoft.EntityFrameworkCore.InMemory', 'Microsoft.EntityFrameworkCore.SqlServer' have been registered in the service provider. Only a single database provider can be registered in a service provider. If possible, ensure that Entity Framework is managing its service provider by removing the call to 'UseInternalServiceProvider'. Otherwise, consider conditionally registering the database provider, or maintaining one service provider per database provider. | StackTrace:    at Microsoft.EntityFrameworkCore.Internal.DbContextServices.Initialize(IServiceProvider scopedProvider, DbContextOptions contextOptions, DbContext context)
+   at Microsoft.EntityFrameworkCore.DbContext.get_ContextServices()
+   at Microsoft.EntityFrameworkCore.DbContext.get_InternalServiceProvider()
+   at Microsoft.EntityFrameworkCore.DbContext.get_DbContextDependencies()
+   at Microsoft.EntityFrameworkCore.DbContext.Microsoft.EntityFrameworkCore.Internal.IDbContextDependencies.get_StateManager()
+   at Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1.EntryWithoutDetectChanges(TEntity entity)
+   at Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1.Add(TEntity entity)
+   at AuctionService.Test.RepositoriesTests.BidRepository_GetBidsForAuction_Returns_List() in C:\Family\Ashish\Constellation\CarAuctionManagementSystem_Simple\AuctionService.Test\RepositoriesTests.cs:line 63
+   at NUnit.Framework.Internal.TaskAwaitAdapter.GenericAdapter`1.GetResult()
+   at NUnit.Framework.Internal.AsyncToSyncAdapter.Await[TResult](TestExecutionContext context, Func`1 invoke)
+   at NUnit.Framework.Internal.AsyncToSyncAdapter.Await(TestExecutionContext context, Func`1 invoke)
+   at NUnit.Framework.Internal.Commands.TestMethodCommand.RunTestMethod(TestExecutionContext context)
+   at NUnit.Framework.Internal.Commands.TestMethodCommand.Execute(TestExecutionContext context)
+   at NUnit.Framework.Internal.Commands.BeforeAndAfterTestCommand.<>c__DisplayClass1_0.<Execute>b__0()
+   at NUnit.Framework.Internal.Commands.DelegatingTestCommand.RunTestMethodInThreadAbortSafeZone(TestExecutionContext context, Action action)
+1)    at Microsoft.EntityFrameworkCore.Internal.DbContextServices.Initialize(IServiceProvider scopedProvider, DbContextOptions contextOptions, DbContext context)
+   at Microsoft.EntityFrameworkCore.DbContext.get_ContextServices()
+   at Microsoft.EntityFrameworkCore.DbContext.get_InternalServiceProvider()
+   at Microsoft.EntityFrameworkCore.DbContext.get_DbContextDependencies()
+   at Microsoft.EntityFrameworkCore.DbContext.Microsoft.EntityFrameworkCore.Internal.IDbContextDependencies.get_StateManager()
+   at Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1.EntryWithoutDetectChanges(TEntity entity)
+   at Microsoft.EntityFrameworkCore.Internal.InternalDbSet`1.Add(TEntity entity)
+   at AuctionService.Test.RepositoriesTests.BidRepository_GetBidsForAuction_Returns_List() in C:\Family\Ashish\Constellation\CarAuctionManagementSystem_Simple\AuctionService.Test\RepositoriesTests.cs:line 63
+   at NUnit.Framework.Internal.TaskAwaitAdapter.GenericAdapter`1.GetResult()
+   at NUnit.Framework.Internal.AsyncToSyncAdapter.Await[TResult](TestExecutionContext context, Func`1 invoke)
+   at NUnit.Framework.Internal.AsyncToSyncAdapter.Await(TestExecutionContext context, Func`1 invoke)
+   at NUnit.Framework.Internal.Commands.TestMethodCommand.RunTestMethod(TestExecutionContext context)
+   at NUnit.Framework.Internal.Commands.TestMethodCommand.Execute(TestExecutionContext context)
+   at NUnit.Framework.Internal.Commands.BeforeAndAfterTestCommand.<>c__DisplayClass1_0.<Execute>b__0()
+   at NUnit.Framework.Internal.Commands.DelegatingTestCommand.RunTestMethodInThreadAbortSafeZone(TestExecutionContext context, Action action)
+
+CloseAuctionAsync_Throws_When_NotFound Passed
+JwtTokenService_Generates_Token Failed | Error: System.ArgumentOutOfRangeException : IDX10720: Unable to create KeyedHashAlgorithm for algorithm 'HS256', the key size must be greater than: '256' bits, key has '192' bits. (Parameter 'keyBytes') | StackTrace:    at Microsoft.IdentityModel.Tokens.CryptoProviderFactory.ValidateKeySize(Byte[] keyBytes, String algorithm, Int32 expectedNumberOfBytes)
+   at Microsoft.IdentityModel.Tokens.CryptoProviderFactory.CreateKeyedHashAlgorithm(Byte[] keyBytes, String algorithm)
+   at Microsoft.IdentityModel.Tokens.SymmetricSignatureProvider.CreateKeyedHashAlgorithm()
+   at Microsoft.IdentityModel.Tokens.DisposableObjectPool`1.CreateInstance()
+   at Microsoft.IdentityModel.Tokens.DisposableObjectPool`1.Allocate()
+   at Microsoft.IdentityModel.Tokens.SymmetricSignatureProvider.GetKeyedHashAlgorithm(Byte[] keyBytes, String algorithm)
+   at Microsoft.IdentityModel.Tokens.SymmetricSignatureProvider.Sign(Byte[] input)
+   at Microsoft.IdentityModel.JsonWebTokens.JwtTokenUtilities.CreateEncodedSignature(String input, SigningCredentials signingCredentials)
+   at System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.WriteToken(SecurityToken token)
+   at AuthService.Application.Services.JwtTokenService.GenerateToken(UserValidationResponse user) in C:\Family\Ashish\Constellation\CarAuctionManagementSystem_Simple\AuthService\Application\Services\JwtTokenService.cs:line 39
+   at AuthService.Test.AuthServiceTests.JwtTokenService_Generates_Token() in C:\Family\Ashish\Constellation\CarAuctionManagementSystem_Simple\AuthService.Test\AuthServiceTests.cs:line 25
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+1)    at Microsoft.IdentityModel.Tokens.CryptoProviderFactory.ValidateKeySize(Byte[] keyBytes, String algorithm, Int32 expectedNumberOfBytes)
+   at Microsoft.IdentityModel.Tokens.CryptoProviderFactory.CreateKeyedHashAlgorithm(Byte[] keyBytes, String algorithm)
+   at Microsoft.IdentityModel.Tokens.SymmetricSignatureProvider.CreateKeyedHashAlgorithm()
+   at Microsoft.IdentityModel.Tokens.DisposableObjectPool`1.CreateInstance()
+   at Microsoft.IdentityModel.Tokens.DisposableObjectPool`1.Allocate()
+   at Microsoft.IdentityModel.Tokens.SymmetricSignatureProvider.GetKeyedHashAlgorithm(Byte[] keyBytes, String algorithm)
+   at Microsoft.IdentityModel.Tokens.SymmetricSignatureProvider.Sign(Byte[] input)
+   at Microsoft.IdentityModel.JsonWebTokens.JwtTokenUtilities.CreateEncodedSignature(String input, SigningCredentials signingCredentials)
+   at System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler.WriteToken(SecurityToken token)
+   at AuthService.Application.Services.JwtTokenService.GenerateToken(UserValidationResponse user) in C:\Family\Ashish\Constellation\CarAuctionManagementSystem_Simple\AuthService\Application\Services\JwtTokenService.cs:line 39
+   at AuthService.Test.AuthServiceTests.JwtTokenService_Generates_Token() in C:\Family\Ashish\Constellation\CarAuctionManagementSystem_Simple\AuthService.Test\AuthServiceTests.cs:line 25
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+
+Start_ReturnsConflict_When_Service_Throws Passed
+PlaceBidAsync_Throws_When_AuctionNotFound Passed
+Close_ReturnsOk_When_Succeeds Passed
+CloseAuctionAsync_Closes_When_Active Passed
+AddVehicleAsync_Throws_On_Duplicate_Id Passed
+AddVehicleAsync_Adds_Truck_With_Default_Load Passed
+ValidateAsync_ReturnsNull_WhenRepositoryReturnsNull Passed
+CreateUserAsync_AddsUserAndSaves Passed
+
+Test Output:
+[Informational] Building Test Projects
+[Informational] ========== Starting test run ==========
+[Informational] NUnit Adapter 4.6.0.0: Test execution started
+[Informational] Running selected tests in C:\Family\Ashish\Constellation\CarAuctionManagementSystem_Simple\AuctionService.Test\bin\Debug\net8.0\AuctionService.Test.dll
+[Informational]    NUnit3TestExecutor discovered 23 of 23 NUnit test cases using Current Discovery mode, Non-Explicit run
+[Informational] NUnit Adapter 4.6.0.0: Test execution complete
+[Informational] NUnit Adapter 4.6.0.0: Test execution started
+[Informational] Running selected tests in C:\Family\Ashish\Constellation\CarAuctionManagementSystem_Simple\ItemService.Test\bin\Debug\net8.0\ItemService.Test.dll
+[Informational]    NUnit3TestExecutor discovered 13 of 13 NUnit test cases using Current Discovery mode, Non-Explicit run
+[Informational] NUnit Adapter 4.6.0.0: Test execution complete
+[Informational] NUnit Adapter 4.6.0.0: Test execution started
+[Informational] Running selected tests in C:\Family\Ashish\Constellation\CarAuctionManagementSystem_Simple\UserService.Test\bin\Debug\net8.0\UserService.Test.dll
+[Informational]    NUnit3TestExecutor discovered 11 of 11 NUnit test cases using Current Discovery mode, Non-Explicit run
+[Informational] NUnit Adapter 4.6.0.0: Test execution complete
+[Informational] NUnit Adapter 4.6.0.0: Test execution started
+[Informational] Running selected tests in C:\Family\Ashish\Constellation\CarAuctionManagementSystem_Simple\AuthService.Test\bin\Debug\net8.0\AuthService.Test.dll
+[Informational]    NUnit3TestExecutor discovered 4 of 4 NUnit test cases using Current Discovery mode, Non-Explicit run
+[Informational] NUnit Adapter 4.6.0.0: Test execution complete
+[Informational] ========== Test run finished: 51 Tests (45 Passed, 6 Failed, 0 Skipped) run in 4.3 sec ==========

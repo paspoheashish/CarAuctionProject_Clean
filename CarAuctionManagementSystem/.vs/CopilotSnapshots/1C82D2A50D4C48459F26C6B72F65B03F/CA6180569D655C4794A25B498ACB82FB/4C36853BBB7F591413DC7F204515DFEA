@@ -1,0 +1,128 @@
+﻿using AuctionService.Application.DTOs;
+using AuctionService.Application.Interfaces;
+using AuctionService.Controllers;
+using AuctionService.Domain.Entities;
+using Microsoft.AspNetCore.Mvc;
+using Moq;
+using NUnit.Framework;
+using System.Threading.Tasks;
+
+namespace AuctionService.Test
+{
+    public class AuctionsControllerTests
+    {
+        private Mock<IAuctionService> _serviceMock = null!;
+        private AuctionsController _controller = null!;
+
+        [SetUp]
+        public void Setup()
+        {
+            _serviceMock = new Mock<IAuctionService>();
+            _controller = new AuctionsController(_serviceMock.Object);
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            if (_controller is System.IDisposable d) d.Dispose();
+            _controller = null!;
+        }
+
+        [Test]
+        public async Task Start_ReturnsOk_When_Succeeds()
+        {
+            var dto = new StartAuctionDto { VehicleId = 1 };
+            var auction = new Auction { VehicleId = 1 };
+            _serviceMock.Setup(s => s.StartAuctionAsync(1)).ReturnsAsync(auction);
+
+            var res = await _controller.Start(dto);
+            Assert.That(res, Is.TypeOf<OkObjectResult>());
+            var obj = ((OkObjectResult)res).Value!;
+            Assert.That(obj, Is.SameAs(auction));
+        }
+
+        [Test]
+        public async Task StartAuction_WhenVehicleMissing_ReturnsMessage()
+        {
+            var dto = new StartAuctionDto { VehicleId = 2 };
+            _serviceMock.Setup(s => s.StartAuctionAsync(2)).ThrowsAsync(new System.Exception("Vehicle does not exist."));
+
+            var res = await _controller.Start(dto);
+            Assert.That(res, Is.TypeOf<ConflictObjectResult>());
+            var obj2 = ((ConflictObjectResult)res).Value!;
+            var msg = obj2.GetType().GetProperty("message")!.GetValue(obj2) as string;
+            Assert.That(msg, Is.EqualTo("Vehicle does not exist."));
+        }
+
+        [Test]
+        public async Task Close_ReturnsOk_When_Succeeds()
+        {
+            var auction = new Auction { Id = 5 };
+            _serviceMock.Setup(s => s.CloseAuctionAsync(5)).ReturnsAsync(auction);
+
+            var res = await _controller.Close(5);
+            Assert.That(res, Is.TypeOf<OkObjectResult>());
+            var obj3 = ((OkObjectResult)res).Value!;
+            Assert.That(obj3, Is.SameAs(auction));
+        }
+
+        [Test]
+        public async Task CloseAuction_WhenNotFound_ReturnsMessage()
+        {
+            _serviceMock.Setup(s => s.CloseAuctionAsync(6)).ThrowsAsync(new System.Exception("Auction not found."));
+            var res = await _controller.Close(6);
+            Assert.That(res, Is.TypeOf<ConflictObjectResult>());
+            var obj4 = ((ConflictObjectResult)res).Value!;
+            var msg2 = obj4.GetType().GetProperty("message")!.GetValue(obj4) as string;
+            Assert.That(msg2, Is.EqualTo("Auction not found."));
+        }
+
+        [Test]
+        public async Task Bid_ReturnsOk_When_Succeeds()
+        {
+            var dto = new PlaceBidDto { Amount = 100m, Bidder = 9 };
+            var auction = new Auction { Id = 7 };
+            _serviceMock.Setup(s => s.PlaceBidAsync(7, 100m, 9)).ReturnsAsync(auction);
+
+            var res = await _controller.Bid(7, dto);
+            Assert.That(res, Is.TypeOf<OkObjectResult>());
+            var obj5 = ((OkObjectResult)res).Value!;
+            Assert.That(obj5, Is.SameAs(auction));
+        }
+
+        [Test]
+        public async Task Bid_ReturnsConflict_When_Service_Throws()
+        {
+            var dto = new PlaceBidDto { Amount = 10m, Bidder = 1 };
+            _serviceMock.Setup(s => s.PlaceBidAsync(8, 10m, 1)).ThrowsAsync(new System.Exception("Bid must be higher than current bid."));
+
+            var res = await _controller.Bid(8, dto);
+            Assert.That(res, Is.TypeOf<ConflictObjectResult>());
+            var obj6 = ((ConflictObjectResult)res).Value!;
+            var msg3 = obj6.GetType().GetProperty("message")!.GetValue(obj6) as string;
+            Assert.That(msg3, Is.EqualTo("Bid must be higher than current bid."));
+        }
+
+        [Test]
+        public async Task Get_ReturnsOk_When_Found()
+        {
+            var auction = new Auction { Id = 20 };
+            _serviceMock.Setup(s => s.GetAuctionAsync(20)).ReturnsAsync(auction);
+
+            var res = await _controller.Get(20);
+            Assert.That(res, Is.TypeOf<OkObjectResult>());
+            var obj7 = ((OkObjectResult)res).Value!;
+            Assert.That(obj7, Is.SameAs(auction));
+        }
+
+        [Test]
+        public async Task Get_ReturnsNotFound_When_Null()
+        {
+            _serviceMock.Setup(s => s.GetAuctionAsync(21)).ReturnsAsync((Auction?)null);
+
+            var res = await _controller.Get(21);
+
+            Assert.That(res, Is.InstanceOf<NotFoundResult>());
+        }
+    }
+}

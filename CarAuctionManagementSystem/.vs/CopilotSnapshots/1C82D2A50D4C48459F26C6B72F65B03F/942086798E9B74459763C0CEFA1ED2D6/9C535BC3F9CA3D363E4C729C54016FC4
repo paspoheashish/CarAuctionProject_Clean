@@ -1,0 +1,56 @@
+﻿using Moq;
+using NUnit.Framework;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using UserService.Application.Interfaces.Repositories;
+using UserService.Application.DTOs;
+using UserService.Application.Services;
+using UserService.Domain.Entities;
+using UserService.Controllers;
+
+namespace UserService.Test
+{
+    [TestFixture]
+    public class UsersControllerTests
+    {
+        private Mock<IUserRepository> _userRepositoryMock = null!;
+        private Mock<UserService.Application.Interfaces.Repositories.IUnitOfWork> _unitOfWorkMock = null!;
+        private UserService.Application.Services.UserService _service = null!;
+        private UsersController _controller = null!;
+
+        [SetUp]
+        public void SetUp()
+        {
+            _userRepositoryMock = new Mock<IUserRepository>();
+            _unitOfWorkMock = new Mock<UserService.Application.Interfaces.Repositories.IUnitOfWork>();
+            _service = new UserService.Application.Services.UserService(_unitOfWorkMock.Object, _userRepositoryMock.Object);
+            _controller = new UsersController(_service);
+        }
+
+        [Test]
+        public async Task GetUser_missing()
+        {
+            _userRepositoryMock.Setup(r => r.GetByEmailAsync(It.IsAny<string>())).ReturnsAsync((User?)null);
+            var result = await _controller.GetUser("ap@gmail.com");
+            Assert.That(result, Is.TypeOf<NotFoundObjectResult>());
+            var obj = ((NotFoundObjectResult)result).Value!;
+            var message = obj.GetType().GetProperty("message")!.GetValue(obj) as string;
+            Assert.That(message, Is.EqualTo("User not found."));
+        }
+
+        [Test]
+        public async Task Register_ok()
+        {
+            var dto = new CreateUserDto { FirstName = "ap", LastName = "ap", Email = "ap@gmail.com", Password = "ap1234" };
+            _userRepositoryMock.Setup(r => r.GetByEmailAsync(dto.Email)).ReturnsAsync((User?)null);
+            _userRepositoryMock.Setup(r => r.AddAsync(It.IsAny<User>())).Returns(Task.CompletedTask).Callback<User>(u => { typeof(User).GetProperty("Id")!.SetValue(u, 99L); });
+            _unitOfWorkMock.Setup(u => u.SaveAsync()).ReturnsAsync(1);
+
+            var res = await _controller.Register(dto);
+            Assert.That(res, Is.TypeOf<OkObjectResult>());
+            var obj = ((OkObjectResult)res).Value!;
+            var email = obj.GetType().GetProperty("Email")!.GetValue(obj) as string;
+            Assert.That(email, Is.EqualTo(dto.Email));
+        }
+    }
+}

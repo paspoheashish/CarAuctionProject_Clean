@@ -1,0 +1,26 @@
+﻿using AuthService.Application.DTOs;
+using AuthService.Application.Services;
+using Microsoft.Extensions.Configuration;
+using Moq;
+using NUnit.Framework;
+
+namespace AuthService.Test
+{
+    public class JwtTokenServiceTests
+    {
+        [Test]
+        public void Token_ok()
+        {
+            var configMock = new Mock<IConfiguration>();
+
+            configMock.Setup(c => c["Jwt:Key"]).Returns("supersecretkey1234567890_supersecret");
+            configMock.Setup(c => c["Jwt:Issuer"]).Returns("issuer");
+            configMock.Setup(c => c["Jwt:Audience"]).Returns("audience");
+
+            var service = new JwtTokenService(configMock.Object);
+            var token = service.GenerateToken(new UserValidationResponse { UserId = 1, Email = "ap@gmail.com", Role = "User" });
+
+            Assert.That(token, Is.Not.Null.And.Not.Empty);
+        }
+    }
+}

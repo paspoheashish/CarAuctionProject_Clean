@@ -1,0 +1,42 @@
+﻿using CarAuctionManagementSystem.Application.Interfaces.Repositories;
+using CarAuctionManagementSystem.Domain.Entities;
+using CarAuctionManagementSystem.Domain.Enums;
+using CarAuctionManagementSystem.Infrastructure.DataBase;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CarAuctionManagementSystem.Infrastructure.Repositories
+{
+    public sealed class VehicleRepository : IVehicleRepository
+    {
+        private readonly List<Vehicle> _vehicles = InMemoryDatabase.Vehicles;
+
+        public Task AddAsync(Vehicle vehicle)
+        {
+            _vehicles.Add(vehicle);
+            return Task.CompletedTask;
+        }
+
+        public Task<Vehicle?> GetByIdAsync(int id)
+        {
+            var vehicle = _vehicles.FirstOrDefault(v => v.Id == id);
+            return Task.FromResult(vehicle);
+        }            
+
+        public Task<List<Vehicle>> SearchAsync(
+            VehicleType? type, string? manufacturer, string? model, int? year)
+        {
+            var result = _vehicles.Where(x =>
+                (!type.HasValue || x.Type == type.Value) &&
+                (string.IsNullOrWhiteSpace(manufacturer)) &&
+                (string.IsNullOrWhiteSpace(model)) &&
+                (!year.HasValue || x.Year == year.Value)).ToList();
+
+            return Task.FromResult(result);
+        }
+    }
+
+}

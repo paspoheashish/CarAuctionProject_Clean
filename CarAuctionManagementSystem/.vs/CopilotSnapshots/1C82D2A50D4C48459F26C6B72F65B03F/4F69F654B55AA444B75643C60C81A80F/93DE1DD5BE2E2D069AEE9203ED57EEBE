@@ -1,0 +1,69 @@
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using ItemService.Application.DTOs;
+using ItemService.Application.Interfaces;
+using ItemService.Application.Services;
+using ItemService.Domain.Entities;
+using Moq;
+using NUnit.Framework;
+using ItemService.Application.Interfaces;
+
+namespace ItemService.Test
+{
+    public class VechicleServiceTests
+    {
+        private Mock<IUnitOfWork> _uowMock = null!;
+        private Mock<IVehicleRepository> _repoMock = null!;
+        private VechicleService _service = null!;
+
+        [SetUp]
+        public void Setup()
+        {
+            _uowMock = new Mock<IUnitOfWork>();
+            _repoMock = new Mock<IVehicleRepository>();
+            _service = new VechicleService(_uowMock.Object, _repoMock.Object);
+        }
+
+        [Test]
+        public async Task AddVehicle_Succeeds_With_Defaults()
+        {
+            var dto = new AddVehicleDto { Id = 1, Type = "Hatchback", Manufacturer = "M", Model = "X", Year = 2020, StartingBid = 100m };
+            _repoMock.Setup(r => r.GetAsync(dto.Id)).ReturnsAsync((Vehicle?)null);
+
+            var result = await _service.AddVehicleAsync(dto);
+
+            Assert.That(result, Is.InstanceOf<Hatchback>());
+            var hb = (Hatchback)result;
+            Assert.That(hb.NumberOfDoors, Is.EqualTo(4));
+        }
+
+        [Test]
+        public void AddVehicle_Throws_WhenDuplicate()
+        {
+            var dto = new AddVehicleDto { Id = 5, Type = "Hatchback", Manufacturer = "M", Model = "D", Year = 2017, StartingBid = 10m };
+            _repoMock.Setup(r => r.GetAsync(dto.Id)).ReturnsAsync(new Hatchback { Id = 5 });
+
+            Assert.ThrowsAsync<Exception>(async () => await _service.AddVehicleAsync(dto));
+        }
+
+        [Test]
+        public async Task Search_Returns_Results()
+        {
+            var expected = new List<Vehicle> { new Hatchback { Id = 7 } };
+            _repoMock.Setup(r => r.SearchAsync("Hatchback", "M", "X", 2020)).ReturnsAsync(expected);
+
+            var result = await _service.SearchAsync("Hatchback", "M", "X", 2020);
+            Assert.That(result, Is.SameAs(expected));
+        }
+
+        [Test]
+        public async Task Get_Returns_Vehicle()
+        {
+            var expected = new Sedan { Id = 8 };
+            _repoMock.Setup(r => r.GetAsync(8)).ReturnsAsync(expected);
+
+            var result = await _service.GetAsync(8);
+            Assert.That(result, Is.SameAs(expected));
+        }
+    }
+}

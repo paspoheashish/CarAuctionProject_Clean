@@ -1,0 +1,48 @@
+﻿using AuthService.Application.DTOs;
+using AuthService.Application.Interfaces;
+using AuthService.Controllers;
+using Moq;
+using NUnit.Framework;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+
+namespace AuthService.Test
+{
+    public class AuthControllerTests
+    {
+        [Test]
+        public async Task Test_Login_bad()
+        {
+            var authMock = new Mock<IAuthorizationService>();
+            authMock.Setup(a => a.Authorize("ap@gmail.com", "ap1234")).ReturnsAsync((UserValidationResponse?)null);
+
+            var jwtMock = new Mock<IJwtTokenService>();
+            var controller = new AuthController(authMock.Object, jwtMock.Object);
+
+            var res = await controller.Login(new LoginRequest { Email = "ap@gmail.com", Password = "ap1234" });
+            Assert.That(res, Is.TypeOf<UnauthorizedObjectResult>());
+            var obj = ((UnauthorizedObjectResult)res).Value!;
+            var msg = obj.GetType().GetProperty("message")!.GetValue(obj) as string;
+            Assert.That(msg, Is.EqualTo("Invalid credentials"));
+        }
+
+        [Test]
+        public async Task Test_Login_ok()
+        {
+            var user = new UserValidationResponse { UserId = 2, Email = "ap@gmail.com", Role = "Admin" };
+            var authMock = new Mock<IAuthorizationService>();
+            authMock.Setup(a => a.Authorize("ap@gmail.com", "ap1234")).ReturnsAsync(user);
+
+            var jwtMock = new Mock<IJwtTokenService>();
+            jwtMock.Setup(j => j.GenerateToken(user)).Returns("token123");
+
+            var controller = new AuthController(authMock.Object, jwtMock.Object);
+
+            var res = await controller.Login(new LoginRequest { Email = "ap@gmail.com", Password = "ap1234" });
+            Assert.That(res, Is.TypeOf<OkObjectResult>());
+            var ok = (OkObjectResult)res;
+            var lr = (LoginResponse)ok.Value!;
+            Assert.That(lr.Token, Is.EqualTo("token123"));
+        }
+    }
+}

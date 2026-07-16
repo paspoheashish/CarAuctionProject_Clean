@@ -1,0 +1,50 @@
+﻿using AutoMapper;
+using CarAuctionManagementSystem.Application.UseCases.Bids;
+using CarAuctionManagementSystem.Application.UseCases.Bids.Command;
+using CarAuctionManagementSystem.Application.UseCases.Bids.Query;
+using CarAuctionManagementSystem.DTOs.Bids;
+using CarAuctionManagementSystem.Mapping;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+
+namespace CarAuctionManagementSystem.Controllers
+{
+    [ApiController]
+    [Route("api/bids")]
+    public class BidsController : ControllerBase
+    {
+        private readonly IMediator _mediator;
+        private readonly IMapper _mapper;
+        public BidsController(IMediator mediator, IMapper mapper)
+        {
+            _mediator = mediator;
+            _mapper = mapper;
+        }
+
+        [HttpPost("place")]
+        public async Task<IActionResult> PlaceBid([FromBody] PlaceBidRequest request)
+        {
+            var command = new PlaceBidCommand(
+                request.AuctionId,
+                request.BidderUserId,
+                request.Amount
+            );
+
+            var bidId = await _mediator.Send(command);
+
+            return Ok(new { bidId });
+        }
+
+        [HttpGet("{auctionId}")]
+        public async Task<IActionResult> GetBids(int auctionId)
+        {
+            var query = new GetBidsQuery(auctionId);
+
+            var bids = await _mediator.Send(query);
+
+            var response = bids.Select(_mapper.Map<BidResponse>);
+
+            return Ok(response);
+        }
+    }
+}

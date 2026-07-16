@@ -1,0 +1,95 @@
+﻿using AuctionService.Application.DTOs;
+using AuctionService.Application.Interfaces;
+using AuctionService.Controllers;
+using AuctionService.Domain.Entities;
+using Microsoft.AspNetCore.Mvc;
+using Moq;
+using NUnit.Framework;
+using System;
+using System.Threading.Tasks;
+
+namespace AuctionService.Test
+{
+    public class AuctionsControllerTests
+    {
+        private Mock<IAuctionService> _serviceMock = null!;
+        private AuctionsController _controller = null!;
+
+        [SetUp]
+        public void Setup()
+        {
+            _serviceMock = new Mock<IAuctionService>();
+            _controller = new AuctionsController(_serviceMock.Object);
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            if (_controller is IDisposable d) d.Dispose();
+            _controller = null!;
+        }
+
+        [Test]
+        public async Task Start_Works_When_Service_Returns_Auction()
+        {
+            // Arrange
+            var dto = new StartAuctionDto { VehicleId = 1 };
+            var auction = new Auction { VehicleId = 1 };
+            _serviceMock.Setup(s => s.StartAuctionAsync(1)).ReturnsAsync(auction);
+
+            // Act
+            var res = await _controller.Start(dto);
+
+            // Assert
+            Assert.That(res, Is.TypeOf<OkObjectResult>());
+            var ok = (OkObjectResult)res;
+            Assert.That(ok.Value, Is.SameAs(auction));
+        }
+
+        [Test]
+        public async Task Start_Returns_Error_Message_When_Service_Throws()
+        {
+            // Arrange
+            var dto = new StartAuctionDto { VehicleId = 2 };
+            _serviceMock.Setup(s => s.StartAuctionAsync(2)).ThrowsAsync(new Exception("Vehicle missing."));
+
+            // Act
+            var res = await _controller.Start(dto);
+
+            // Assert
+            Assert.That(res, Is.TypeOf<ConflictObjectResult>());
+            var conflict = (ConflictObjectResult)res;
+            var msg = conflict.Value!.GetType().GetProperty("message")!.GetValue(conflict.Value) as string;
+            Assert.That(msg, Is.EqualTo("Vehicle missing."));
+        }
+
+        [Test]
+        public async Task Get_Returns_Auction_When_Found()
+        {
+            // Arrange
+            var auction = new Auction { Id = 5 };
+            _serviceMock.Setup(s => s.GetAuctionAsync(5)).ReturnsAsync(auction);
+
+            // Act
+            var res = await _controller.Get(5);
+
+            // Assert
+            Assert.That(res, Is.TypeOf<OkObjectResult>());
+            var ok = (OkObjectResult)res;
+            Assert.That(ok.Value, Is.SameAs(auction));
+        }
+
+        [Test]
+        public async Task Get_Returns_NotFound_When_NoAuction()
+        {
+            // Arrange
+            _serviceMock.Setup(s => s.GetAuctionAsync(6)).ReturnsAsync((Auction?)null);
+
+            // Act
+            var res = await _controller.Get(6);
+
+            // Assert
+            Assert.That(res, Is.TypeOf<NotFoundResult>());
+        }
+    }
+}

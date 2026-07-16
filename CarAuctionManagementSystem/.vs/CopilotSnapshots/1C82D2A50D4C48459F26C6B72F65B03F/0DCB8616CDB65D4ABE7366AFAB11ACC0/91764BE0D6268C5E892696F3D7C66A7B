@@ -1,0 +1,90 @@
+﻿using Moq;
+using NUnit.Framework;
+using System.Threading.Tasks;
+using UserService.Application.Interfaces.Repositories;
+using UserService.Application.Services;
+using UserService.Application.DTOs;
+using UserService.Domain.Entities;
+
+namespace UserService.Test
+{
+    [TestFixture]
+    public class UserServiceTests
+    {
+        private Mock<IUserRepository> _userRepositoryMock = null!;
+        private Mock<UserService.Application.Interfaces.Repositories.IUnitOfWork> _unitOfWorkMock = null!;
+        private UserService.Application.Services.UserService _service = null!;
+
+        [SetUp]
+        public void SetUp()
+        {
+            _userRepositoryMock = new Mock<IUserRepository>();
+            _unitOfWorkMock = new Mock<UserService.Application.Interfaces.Repositories.IUnitOfWork>();
+            _service = new UserService.Application.Services.UserService(_unitOfWorkMock.Object, _userRepositoryMock.Object);
+        }
+
+        [Test]
+        public async Task ValidateAsync_ReturnsUser_WhenRepositoryReturnsUser()
+        {
+            var email = "a@b.com";
+            var password = "pwd";
+            var expected = new User("First", "Last", email, password);
+            _userRepositoryMock.Setup(r => r.GetByEmailAndPasswordAsync(email, password)).ReturnsAsync(expected);
+
+            var result = await _service.ValidateAsync(email, password);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result!.Email, Is.EqualTo(email));
+        }
+
+        [Test]
+        public async Task ValidateAsync_ReturnsNull_WhenRepositoryReturnsNull()
+        {
+            _userRepositoryMock.Setup(r => r.GetByEmailAndPasswordAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync((User?)null);
+
+            var result = await _service.ValidateAsync("x", "y");
+
+            Assert.That(result, Is.Null);
+        }
+
+        [Test]
+        public async Task GetByEmailAsync_ReturnsUser_WhenFound()
+        {
+            var email = "test@t.com";
+            var expected = new User("F", "L", email, "p");
+            _userRepositoryMock.Setup(r => r.GetByEmailAsync(email)).ReturnsAsync(expected);
+
+            var result = await _service.GetByEmailAsync(email);
+
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result!.Email, Is.EqualTo(email));
+        }
+
+        [Test]
+        public async Task GetByEmailAsync_ReturnsNull_WhenNotFound()
+        {
+            _userRepositoryMock.Setup(r => r.GetByEmailAsync(It.IsAny<string>())).ReturnsAsync((User?)null);
+
+            var result = await _service.GetByEmailAsync("no@no.com");
+
+            Assert.That(result, Is.Null);
+        }
+
+        [Test]
+        public async Task CreateUserAsync_AddsUserAndSaves()
+        {
+            _unitOfWorkMock.Setup(u => u.SaveAsync()).ReturnsAsync(1);
+            User? captured = null;
+            _userRepositoryMock.Setup(r => r.AddAsync(It.IsAny<User>())).Callback<User>(u => captured = u).Returns(Task.CompletedTask);
+
+            var dto = new CreateUserDto { FirstName = "A", LastName = "B", Email = "c@d.com", Password = "p" };
+
+            var result = await _service.CreateUserAsync(dto);
+
+            Assert.That(captured, Is.Not.Null);
+            Assert.That(captured!.Email, Is.EqualTo(dto.Email));
+            _unitOfWorkMock.Verify(u => u.SaveAsync(), Moq.Times.Once());
+            Assert.That(result.Email, Is.EqualTo(dto.Email));
+        }
+    }
+}

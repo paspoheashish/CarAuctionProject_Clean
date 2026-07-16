@@ -1,0 +1,207 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Family\\Ashish\\Constellation\\CarAuctionManagementSystem_Simple\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{ABE66B30-BD47-A7B2-B17B-5BA67959B026}|ApiGateway\\ApiGateway.csproj|c:\\family\\ashish\\constellation\\carauctionmanagementsystem_simple\\apigateway\\controllers\\itemcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{ABE66B30-BD47-A7B2-B17B-5BA67959B026}|ApiGateway\\ApiGateway.csproj|solutionrelative:apigateway\\controllers\\itemcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{00904F91-142E-B9AC-0823-9DAC4671E5CE}|AuctionService\\AuctionService.csproj|c:\\family\\ashish\\constellation\\carauctionmanagementsystem_simple\\auctionservice\\application\\services\\auctionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{00904F91-142E-B9AC-0823-9DAC4671E5CE}|AuctionService\\AuctionService.csproj|solutionrelative:auctionservice\\application\\services\\auctionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F8832160-6E8A-C1E0-17C8-08A5783EBD52}|UserService\\UserService.csproj|c:\\family\\ashish\\constellation\\carauctionmanagementsystem_simple\\userservice\\application\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F8832160-6E8A-C1E0-17C8-08A5783EBD52}|UserService\\UserService.csproj|solutionrelative:userservice\\application\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{ABE66B30-BD47-A7B2-B17B-5BA67959B026}|ApiGateway\\ApiGateway.csproj|c:\\family\\ashish\\constellation\\carauctionmanagementsystem_simple\\apigateway\\infrastructure\\client\\auctionclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{ABE66B30-BD47-A7B2-B17B-5BA67959B026}|ApiGateway\\ApiGateway.csproj|solutionrelative:apigateway\\infrastructure\\client\\auctionclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6CDAB7B3-DE4F-6FF5-06F0-D824F083F1AF}|AuthService\\AuthService.csproj|c:\\family\\ashish\\constellation\\carauctionmanagementsystem_simple\\authservice\\application\\services\\jwttokenservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6CDAB7B3-DE4F-6FF5-06F0-D824F083F1AF}|AuthService\\AuthService.csproj|solutionrelative:authservice\\application\\services\\jwttokenservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6CDAB7B3-DE4F-6FF5-06F0-D824F083F1AF}|AuthService\\AuthService.csproj|c:\\family\\ashish\\constellation\\carauctionmanagementsystem_simple\\authservice\\application\\services\\authorizationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6CDAB7B3-DE4F-6FF5-06F0-D824F083F1AF}|AuthService\\AuthService.csproj|solutionrelative:authservice\\application\\services\\authorizationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6CDAB7B3-DE4F-6FF5-06F0-D824F083F1AF}|AuthService\\AuthService.csproj|c:\\family\\ashish\\constellation\\carauctionmanagementsystem_simple\\authservice\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6CDAB7B3-DE4F-6FF5-06F0-D824F083F1AF}|AuthService\\AuthService.csproj|solutionrelative:authservice\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{ABE66B30-BD47-A7B2-B17B-5BA67959B026}|ApiGateway\\ApiGateway.csproj|c:\\family\\ashish\\constellation\\carauctionmanagementsystem_simple\\apigateway\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{ABE66B30-BD47-A7B2-B17B-5BA67959B026}|ApiGateway\\ApiGateway.csproj|solutionrelative:apigateway\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{ABE66B30-BD47-A7B2-B17B-5BA67959B026}|ApiGateway\\ApiGateway.csproj|c:\\family\\ashish\\constellation\\carauctionmanagementsystem_simple\\apigateway\\controllers\\auctioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{ABE66B30-BD47-A7B2-B17B-5BA67959B026}|ApiGateway\\ApiGateway.csproj|solutionrelative:apigateway\\controllers\\auctioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{00904F91-142E-B9AC-0823-9DAC4671E5CE}|AuctionService\\AuctionService.csproj|c:\\family\\ashish\\constellation\\carauctionmanagementsystem_simple\\auctionservice\\infrastructure\\repositories\\bidrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{00904F91-142E-B9AC-0823-9DAC4671E5CE}|AuctionService\\AuctionService.csproj|solutionrelative:auctionservice\\infrastructure\\repositories\\bidrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{00904F91-142E-B9AC-0823-9DAC4671E5CE}|AuctionService\\AuctionService.csproj|c:\\family\\ashish\\constellation\\carauctionmanagementsystem_simple\\auctionservice\\infrastructure\\repositories\\auctionrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{00904F91-142E-B9AC-0823-9DAC4671E5CE}|AuctionService\\AuctionService.csproj|solutionrelative:auctionservice\\infrastructure\\repositories\\auctionrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "UserService.cs",
+              "DocumentMoniker": "C:\\Family\\Ashish\\Constellation\\CarAuctionManagementSystem_Simple\\UserService\\Application\\Services\\UserService.cs",
+              "RelativeDocumentMoniker": "UserService\\Application\\Services\\UserService.cs",
+              "ToolTip": "C:\\Family\\Ashish\\Constellation\\CarAuctionManagementSystem_Simple\\UserService\\Application\\Services\\UserService.cs",
+              "RelativeToolTip": "UserService\\Application\\Services\\UserService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACEAAAA8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-31T16:53:57.468Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "AuctionClient.cs",
+              "DocumentMoniker": "C:\\Family\\Ashish\\Constellation\\CarAuctionManagementSystem_Simple\\ApiGateway\\Infrastructure\\Client\\AuctionClient.cs",
+              "RelativeDocumentMoniker": "ApiGateway\\Infrastructure\\Client\\AuctionClient.cs",
+              "ToolTip": "C:\\Family\\Ashish\\Constellation\\CarAuctionManagementSystem_Simple\\ApiGateway\\Infrastructure\\Client\\AuctionClient.cs",
+              "RelativeToolTip": "ApiGateway\\Infrastructure\\Client\\AuctionClient.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-31T16:53:48.875Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "JwtTokenService.cs",
+              "DocumentMoniker": "C:\\Family\\Ashish\\Constellation\\CarAuctionManagementSystem_Simple\\AuthService\\Application\\Services\\JwtTokenService.cs",
+              "RelativeDocumentMoniker": "AuthService\\Application\\Services\\JwtTokenService.cs",
+              "ToolTip": "C:\\Family\\Ashish\\Constellation\\CarAuctionManagementSystem_Simple\\AuthService\\Application\\Services\\JwtTokenService.cs",
+              "RelativeToolTip": "AuthService\\Application\\Services\\JwtTokenService.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAowAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-31T16:53:39.379Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "AuthorizationService.cs",
+              "DocumentMoniker": "C:\\Family\\Ashish\\Constellation\\CarAuctionManagementSystem_Simple\\AuthService\\Application\\Services\\AuthorizationService.cs",
+              "RelativeDocumentMoniker": "AuthService\\Application\\Services\\AuthorizationService.cs",
+              "ToolTip": "C:\\Family\\Ashish\\Constellation\\CarAuctionManagementSystem_Simple\\AuthService\\Application\\Services\\AuthorizationService.cs",
+              "RelativeToolTip": "AuthService\\Application\\Services\\AuthorizationService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-31T16:53:32.704Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ItemController.cs",
+              "DocumentMoniker": "C:\\Family\\Ashish\\Constellation\\CarAuctionManagementSystem_Simple\\ApiGateway\\Controllers\\ItemController.cs",
+              "RelativeDocumentMoniker": "ApiGateway\\Controllers\\ItemController.cs",
+              "ToolTip": "C:\\Family\\Ashish\\Constellation\\CarAuctionManagementSystem_Simple\\ApiGateway\\Controllers\\ItemController.cs",
+              "RelativeToolTip": "ApiGateway\\Controllers\\ItemController.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAqwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-31T16:53:11.914Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AuctionService.cs",
+              "DocumentMoniker": "C:\\Family\\Ashish\\Constellation\\CarAuctionManagementSystem_Simple\\AuctionService\\Application\\Services\\AuctionService.cs",
+              "RelativeDocumentMoniker": "AuctionService\\Application\\Services\\AuctionService.cs",
+              "ToolTip": "C:\\Family\\Ashish\\Constellation\\CarAuctionManagementSystem_Simple\\AuctionService\\Application\\Services\\AuctionService.cs",
+              "RelativeToolTip": "AuctionService\\Application\\Services\\AuctionService.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAMwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-31T16:50:32.964Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "C:\\Family\\Ashish\\Constellation\\CarAuctionManagementSystem_Simple\\AuthService\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "AuthService\\Controllers\\AuthController.cs",
+              "ToolTip": "C:\\Family\\Ashish\\Constellation\\CarAuctionManagementSystem_Simple\\AuthService\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "AuthService\\Controllers\\AuthController.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAowAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-31T16:53:25.313Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "C:\\Family\\Ashish\\Constellation\\CarAuctionManagementSystem_Simple\\ApiGateway\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "ApiGateway\\Controllers\\AuthController.cs",
+              "ToolTip": "C:\\Family\\Ashish\\Constellation\\CarAuctionManagementSystem_Simple\\ApiGateway\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "ApiGateway\\Controllers\\AuthController.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAMwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-31T16:53:18.249Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "AuctionController.cs",
+              "DocumentMoniker": "C:\\Family\\Ashish\\Constellation\\CarAuctionManagementSystem_Simple\\ApiGateway\\Controllers\\AuctionController.cs",
+              "RelativeDocumentMoniker": "ApiGateway\\Controllers\\AuctionController.cs",
+              "ToolTip": "C:\\Family\\Ashish\\Constellation\\CarAuctionManagementSystem_Simple\\ApiGateway\\Controllers\\AuctionController.cs",
+              "RelativeToolTip": "ApiGateway\\Controllers\\AuctionController.cs",
+              "ViewState": "AgIAAB0AAAAAAAAAAAAjwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-31T16:53:05.562Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "BidRepository.cs",
+              "DocumentMoniker": "C:\\Family\\Ashish\\Constellation\\CarAuctionManagementSystem_Simple\\AuctionService\\Infrastructure\\Repositories\\BidRepository.cs",
+              "RelativeDocumentMoniker": "AuctionService\\Infrastructure\\Repositories\\BidRepository.cs",
+              "ToolTip": "C:\\Family\\Ashish\\Constellation\\CarAuctionManagementSystem_Simple\\AuctionService\\Infrastructure\\Repositories\\BidRepository.cs",
+              "RelativeToolTip": "AuctionService\\Infrastructure\\Repositories\\BidRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-31T16:51:05.212Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "AuctionRepository.cs",
+              "DocumentMoniker": "C:\\Family\\Ashish\\Constellation\\CarAuctionManagementSystem_Simple\\AuctionService\\Infrastructure\\Repositories\\AuctionRepository.cs",
+              "RelativeDocumentMoniker": "AuctionService\\Infrastructure\\Repositories\\AuctionRepository.cs",
+              "ToolTip": "C:\\Family\\Ashish\\Constellation\\CarAuctionManagementSystem_Simple\\AuctionService\\Infrastructure\\Repositories\\AuctionRepository.cs",
+              "RelativeToolTip": "AuctionService\\Infrastructure\\Repositories\\AuctionRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-31T16:50:44.942Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

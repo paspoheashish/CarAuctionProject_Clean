@@ -1,0 +1,91 @@
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using ItemService.Application.DTOs;
+using ItemService.Application.Interfaces;
+using ItemService.Controllers;
+using ItemService.Domain.Entities;
+using Microsoft.AspNetCore.Mvc;
+using Moq;
+using NUnit.Framework;
+
+namespace ItemService.Test
+{
+    public class ItemsControllerTests
+    {
+        private Mock<IVechicleService> _serviceMock = null!;
+        private ItemsController _controller = null!;
+
+        [SetUp]
+        public void Setup()
+        {
+            _serviceMock = new Mock<IVechicleService>();
+            _controller = new ItemsController(_serviceMock.Object);
+        }
+
+        [Test]
+        public async Task Add_ReturnsOk_When_Service_AddsVehicle()
+        {
+            var dto = new AddVehicleDto { Id = 1, Type = "Hatchback", Manufacturer = "M", Model = "X", Year = 2020, StartingBid = 100m };
+            var vehicle = new Hatchback { Id = 1 };
+            _serviceMock.Setup(s => s.AddVehicleAsync(dto)).ReturnsAsync(vehicle);
+
+            var result = await _controller.Add(dto);
+
+            Assert.That(result, Is.InstanceOf<OkObjectResult>());
+            var ok = (OkObjectResult)result;
+            Assert.That(ok.Value, Is.SameAs(vehicle));
+        }
+
+        [Test]
+        public async Task Add_ReturnsConflict_When_Service_Throws()
+        {
+            var dto = new AddVehicleDto { Id = 2, Type = "Hatchback", Manufacturer = "M", Model = "X", Year = 2020, StartingBid = 100m };
+            _serviceMock.Setup(s => s.AddVehicleAsync(dto)).ThrowsAsync(new System.Exception("Vehicle ID already exists."));
+
+            var result = await _controller.Add(dto);
+
+            Assert.That(result, Is.InstanceOf<ConflictObjectResult>());
+            var conflict = (ConflictObjectResult)result;
+            var msg = conflict.Value?.GetType().GetProperty("message")?.GetValue(conflict.Value)?.ToString();
+            Assert.That(msg, Is.EqualTo("Vehicle ID already exists."));
+        }
+
+        [Test]
+        public async Task Search_ReturnsOk_With_Data()
+        {
+            var expected = new List<Vehicle> { new Hatchback { Id = 3 } };
+            _serviceMock.Setup(s => s.SearchAsync("Hatchback", "M", "X", 2020)).ReturnsAsync(expected);
+
+            var result = await _controller.Search("Hatchback", "M", "X", 2020);
+
+            Assert.That(result, Is.InstanceOf<OkObjectResult>());
+            var ok = (OkObjectResult)result;
+            Assert.That(ok.Value, Is.SameAs(expected));
+        }
+
+        [Test]
+        public async Task Get_ReturnsOk_With_Vehicle()
+        {
+            var expected = new Sedan { Id = 4 };
+            _serviceMock.Setup(s => s.GetAsync(4)).ReturnsAsync(expected);
+
+            var result = await _controller.Get(4);
+
+            Assert.That(result, Is.InstanceOf<OkObjectResult>());
+            var ok = (OkObjectResult)result;
+            Assert.That(ok.Value, Is.SameAs(expected));
+        }
+
+        [Test]
+        public async Task Get_ReturnsOk_With_Null_When_NotFound()
+        {
+            _serviceMock.Setup(s => s.GetAsync(5)).ReturnsAsync((Vehicle?)null);
+
+            var result = await _controller.Get(5);
+
+            Assert.That(result, Is.InstanceOf<OkObjectResult>());
+            var ok = (OkObjectResult)result;
+            Assert.That(ok.Value, Is.Null);
+        }
+    }
+}

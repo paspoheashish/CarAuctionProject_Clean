@@ -1,0 +1,50 @@
+﻿using CarAuctionManagementSystem.Application.Interfaces.Repositories;
+using CarAuctionManagementSystem.Domain.Entities;
+using CarAuctionManagementSystem.Domain.Enums;
+using CarAuctionManagementSystem.Infrastructure.DataBase;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CarAuctionManagementSystem.Infrastructure.Repositories
+{
+    public sealed class AuctionRepository : IAuctionRepository
+    {
+        private readonly List<Auction> _auctions = InMemoryDatabase.Auctions;
+
+        public Task<List<Auction>> GetAllAsync()
+        {
+            return Task.FromResult(_auctions.ToList());
+        }
+        public Task<List<Auction>> GetAllActiveAsync()
+        {
+            return Task.FromResult(_auctions.Where(x => x.Status == true).ToList());
+        }
+        public Task<Auction?> GetByIdAsync(int id)
+        {
+            return Task.FromResult(_auctions.FirstOrDefault(x => x.Id == id));
+        }
+
+        public Task<Auction?> GetByVehicleIdAsync(int vehicleId)
+        {
+            var auction = _auctions.FirstOrDefault(x => x.VehicleId == vehicleId);
+            return Task.FromResult(auction);
+        }
+
+        public Task AddOrUpdateAsync(Auction auction)
+        {
+            var existingAuction = _auctions.FirstOrDefault(x => x.Id == auction.Id);
+            if (existingAuction != null)
+            {
+                _auctions[_auctions.IndexOf(existingAuction)] = auction;
+            }
+            else
+            {
+                _auctions.Add(auction);
+            }
+            return Task.CompletedTask;
+        }
+    }
+}

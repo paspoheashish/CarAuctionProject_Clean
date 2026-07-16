@@ -1,0 +1,24 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Reflection;
+
+namespace UserService.Test
+{
+    internal static class TestHelpers
+    {
+        public static T? GetOkValue<T>(IActionResult result)
+        {
+            if (result is OkObjectResult ok)
+                return (T?)ok.Value;
+            return default;
+        }
+
+        public static string? GetMessage(IActionResult result)
+        {
+            var obj = (result as ObjectResult)?.Value;
+            if (obj == null) return null;
+            var prop = obj.GetType().GetProperty("message", BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+            return prop?.GetValue(obj)?.ToString();
+        }
+    }
+}

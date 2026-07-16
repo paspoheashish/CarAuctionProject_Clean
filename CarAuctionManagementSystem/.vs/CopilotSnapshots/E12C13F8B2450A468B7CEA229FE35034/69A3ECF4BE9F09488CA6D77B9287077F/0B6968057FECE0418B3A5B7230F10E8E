@@ -1,0 +1,17 @@
+﻿using CarAuctionManagementSystem.Domain.Entities;
+using CarAuctionManagementSystem.Domain.Enums;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CarAuctionManagementSystem.Application.Interfaces.Repositories
+{
+    public interface IVehicleRepository
+    {
+        Task AddAsync(Vehicle vehicle);
+        Task<Vehicle?> GetByIdAsync(int id);
+        Task<List<Vehicle>> SearchAsync(VehicleType? type, string? manufacturer, string? model, int? year);
+    }
+}

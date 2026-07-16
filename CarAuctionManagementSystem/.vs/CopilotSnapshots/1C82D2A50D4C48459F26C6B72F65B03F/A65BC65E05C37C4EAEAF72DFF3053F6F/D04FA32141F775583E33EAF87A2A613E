@@ -1,0 +1,18 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Reflection;
+
+namespace AuthService.Test
+{
+    internal static class TestHelpers
+    {
+        public static object? GetOkValue(IActionResult result) => (result as OkObjectResult)?.Value;
+
+        public static string? GetMessage(IActionResult result)
+        {
+            var obj = (result as ObjectResult)?.Value;
+            if (obj == null) return null;
+            var prop = obj.GetType().GetProperty("message", BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+            return prop?.GetValue(obj)?.ToString();
+        }
+    }
+}

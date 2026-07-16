@@ -1,0 +1,47 @@
+﻿using AuctionService.Application.Interfaces;
+using AuctionService.Infrastructure.Clients;
+using AuctionService.Infrastructure.Repositories;
+using UserService.Application.Interfaces.Repositories;
+using UserService.Infrastructure.Repositories;
+
+internal class Program
+{
+    private static void Main(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
+
+        // Add services to the container.
+
+        builder.Services.AddControllers();
+        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
+
+        builder.Services.AddSingleton<HttpClient>();
+        builder.Services.AddScoped<AppDbContext>();
+        builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+        builder.Services.AddScoped<IAuctionRepository, AuctionRepository>();
+        builder.Services.AddScoped<IBidRepository, BidRepository>();
+        builder.Services.AddScoped<IItemServiceClient, ItemServiceClient>();
+        //builder.Services.AddHttpClient<ItemServiceClient>(c =>
+        //{
+        //    c.BaseAddress = new Uri("http://localhost:5250/");
+        //});        
+        builder.Services.AddScoped<IAuctionService, AuctionService.Application.Services.AuctionService>();
+
+        var app = builder.Build();
+
+        // Configure the HTTP request pipeline.
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI();
+        }
+
+        app.UseAuthorization();
+
+        app.MapControllers();
+
+        app.Run();
+    }
+}

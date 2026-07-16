@@ -1,0 +1,32 @@
+﻿using CarAuctionManagementSystem.Application.Interfaces.Repositories;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CarAuctionManagementSystem.Infrastructure.Repositories
+{
+    public class UnitOfWork : IUnitOfWork
+    {
+        public IAuctionRepository Auctions { get; }
+        public IVehicleRepository Vehicles { get; }
+        public IBidRepository Bids { get; }
+
+        public UnitOfWork(
+            IAuctionRepository auctionRepository,
+            IVehicleRepository vehicleRepository,
+            IBidRepository bidRepository)
+        {
+            Auctions = auctionRepository;
+            Vehicles = vehicleRepository;
+            Bids = bidRepository;
+        }
+
+        public async Task<int> CommitAsync()
+        {
+            return await Task.FromResult(0); // or DbContext.SaveChangesAsync()
+        }
+    }
+
+}
