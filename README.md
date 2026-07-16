@@ -9,13 +9,21 @@ CarAuctionProject_Clean/
 ├── CarAuctionManagementSystem.Application/
 
 │   ├── CarAuctionManagementSystem.Application.csproj
+
 │   │
+
 │   ├── DTOs/
+
 │   │   ├── Auctions/
+
 │   │   │   ├── AuctionResponse.cs
+
 │   │   │   ├── CloseAuctionRequest.cs
+
 │   │   │   └── StartAuctionRequest.cs
+
 │   │   │
+
 │   │   ├── Bids/
 │   │   │   ├── BidResponse.cs
 │   │   │   └── PlaceBidRequest.cs
