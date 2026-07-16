@@ -2,85 +2,99 @@
 CarAuctionProject_Clean
 
 # Folder Tree
-CarAuctionManagementSystem/
-├── CarAuctionManagementSystem.slnx
-├── Program.cs
-├── README.md
-├── DependencyInjection/
-│   └── PresentationServiceRegistration.cs
-├── Controllers/
-│   ├── AuctionsController.cs
-│   ├── BidsController.cs
-│   └── VehiclesController.cs
-├── DTOs/
-│   ├── Auctions/
-│   │   ├── AuctionResponse.cs
-│   │   ├── CloseAuctionRequest.cs
-│   │   └── StartAuctionRequest.cs
-│   ├── Bids/
-│   │   ├── BidResponse.cs
-│   │   └── PlaceBidRequest.cs
-│   └── Vehicles/
-│       ├── CreateVehicleRequest.cs
-│       ├── SearchVehiclesRequest.cs
-│       └── VehicleResponse.cs
-├── Mapping/
-│   ├── AuctionMappingProfile .cs
-│   ├── BidMappingProfile.cs
-│   └── VehicleMappingProfile.cs
-├── MiddleWare/
-│   └── ExceptionMiddleware.cs
+CarAuctionProject_Clean/
+│
 ├── CarAuctionManagementSystem.Application/
 │   ├── CarAuctionManagementSystem.Application.csproj
-│   ├── DependencyInjection/
-│   │   └── ApplicationServiceRegistration.cs
+│   ├── DTOs/
+│   │   ├── Auctions/
+│   │   │   ├── AuctionResponse.cs
+│   │   │   ├── CloseAuctionRequest.cs
+│   │   │   └── StartAuctionRequest.cs
+│   │   ├── Bids/
+│   │   │   ├── BidResponse.cs
+│   │   │   └── PlaceBidRequest.cs
+│   │   └── Vehicles/
+│   │       ├── CreateVehicleRequest.cs
+│       │   ├── SearchVehiclesRequest.cs
+│       │   └── VehicleResponse.cs
 │   ├── Interfaces/
-│   │   ├── Repositories/
-│   │   │   ├── IAuctionRepository.cs
-│   │   │   ├── IBidRepository.cs
-│   │   │   ├── IUnitOfWork.cs
-│   │   │   └── IVehicleRepository.cs
-│   │   └── Services/
-│   │       ├── IAuctionService.cs
-│   │       └── IVehicleService.cs
+│   │   ├── IAuctionService.cs
+│   │   ├── IBidService.cs
+│   │   └── IVehicleService.cs
+│   ├── Mapping/
+│   │   ├── AuctionMappingProfile.cs
+│   │   ├── BidMappingProfile.cs
+│   │   └── VehicleMappingProfile.cs
 │   ├── Services/
 │   │   ├── AuctionService.cs
+│   │   ├── BidService.cs
 │   │   └── VehicleService.cs
 │   └── UseCases/
 │       ├── Auctions/
-│       │   └── Query/
-│       │       ├── GetAllActiveAuctionsHandler .cs
-│       │       ├── GetAuctionByIdHandler .cs
-│       │       └── GetAuctionByVehicleIdHandler .cs
-│       └── Bids/
-│           ├── Command/
-│           │   └── PlaceBidHandler.cs
-│           └── Query/
-│               └── GetBidsHandler.cs
+│       ├── Bids/
+│       └── Vehicles/
+│
 ├── CarAuctionManagementSystem.Domain/
 │   ├── CarAuctionManagementSystem.Domain.csproj
 │   ├── Entities/
 │   │   ├── Auction.cs
 │   │   ├── Bid.cs
-│   │   ├── Vehicle.cs
-│   │   ├── Hatchback.cs
-│   │   ├── Sedan.cs
-│   │   ├── SUV.cs
-│   │   └── Truck.cs
-│   └── Enums/
-│       └── VehicleType.cs
+│   │   └── Vehicle.cs
+│   ├── Enums/
+│   │   ├── AuctionStatus.cs
+│   │   └── VehicleType.cs
+│   └── ValueObjects/
+│       └── Money.cs
+│
 ├── CarAuctionManagementSystem.Infrastructure/
 │   ├── CarAuctionManagementSystem.Infrastructure.csproj
 │   ├── Database/
 │   │   └── InMemoryDatabase.cs
-│   └── DependencyInjection/
-│       └── InfrastructureServiceRegistration.cs
-│   └── Repositories/
-│       ├── AuctionRepository.cs
-│       ├── BidRepository.cs
-│       ├── UnitOfWork.cs
-│       └── VehicleRepository.cs
-└── .vscode/ (optional local config)
+│   ├── DependencyInjection/
+│   │   └── InfrastructureServiceRegistration.cs
+│   ├── Repositories/
+│   │   ├── AuctionRepository.cs
+│   │   ├── BidRepository.cs
+│   │   └── VehicleRepository.cs
+│   └── UnitOfWork/
+│       └── UnitOfWork.cs
+│
+├── CarAuctionManagementSystem.Infrastructure.Tests/
+│   ├── CarAuctionManagementSystem.Infrastructure.Tests.csproj
+│   └── (test classes)
+│
+├── CarAuctionManagementSystem.Tests/
+│   ├── CarAuctionManagementSystem.Tests.csproj
+│   └── (test classes)
+│
+├── CarAuctionManagementSystem/
+│   ├── CarAuctionManagementSystem.csproj
+│   ├── CarAuctionManagementSystem.http
+│   ├── Controllers/
+│   │   ├── AuctionsController.cs
+│   │   ├── BidsController.cs
+│   │   └── VehiclesController.cs
+│   ├── DTOs/
+│   │   ├── Auctions/
+│   │   ├── Bids/
+│   │   └── Vehicles/
+│   ├── Mappers/
+│   │   ├── AuctionMappingProfile.cs
+│   │   ├── BidMappingProfile.cs
+│   │   └── VehicleMappingProfile.cs
+│   ├── MiddleWare/
+│   │   └── ExceptionMiddleware.cs
+│   ├── Properties/
+│   │   └── launchSettings.json
+│   ├── Program.cs
+│   ├── appsettings.json
+│   └── appsettings.Development.json
+│
+├── .gitattributes
+├── .gitignore
+└── README.md
+
 
 
 # CarAuctionManagementSystem
