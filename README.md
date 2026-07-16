@@ -3,7 +3,7 @@ CarAuctionProject_Clean
 
 # Folder Tree
 ```text
-CarAuctionManagementSystem/
+# CarAuctionManagementSystem/
 ├── CarAuctionManagementSystem.slnx
 ├── Program.cs
 ├── README.md
@@ -33,7 +33,7 @@ CarAuctionManagementSystem/
 │   └── ExceptionMiddleware.cs
 
 
-├── CarAuctionManagementSystem.Application/
+├── # CarAuctionManagementSystem.Application/
 │   ├── CarAuctionManagementSystem.Application.csproj
 │   ├── DependencyInjection/
 │   │   └── ApplicationServiceRegistration.cs
