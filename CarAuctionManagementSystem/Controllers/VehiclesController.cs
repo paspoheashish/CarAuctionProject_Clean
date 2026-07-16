@@ -1,76 +1,73 @@
-﻿using CarAuctionManagementSystem.Application.Interfaces;
-using CarAuctionManagementSystem.Application.Mappers;
-using CarAuctionManagementSystem.DTOs;
+﻿using AutoMapper;
+using CarAuctionManagementSystem.Application.Interfaces.Services;
+using CarAuctionManagementSystem.Domain.Entities;
+using CarAuctionManagementSystem.Domain.Enums;
+using CarAuctionManagementSystem.DTOs.Vehicles;
+using CarAuctionManagementSystem.Mapping;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarAuctionManagementSystem.Controllers
 {
     /// <summary>
-    /// Provides HTTP endpoints for vehicle-related operations.
-    /// Delegates business logic to the application service layer.
+    /// Controller for managing vehicle-related endpoints.
     /// </summary>
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/vehicles")]
     public class VehiclesController : ControllerBase
     {
-        private readonly IVehicleService _vehicleService;
+        private readonly IVehicleService _service;
+        private readonly IMapper _mapper;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="VehiclesController"/> class.
         /// </summary>
-        /// <param name="vehicleService">Service responsible for vehicle operations.</param>
-        public VehiclesController(IVehicleService vehicleService)
+        /// <param name="service">The vehicle service.</param>
+        /// <param name="mapper">The AutoMapper instance.</param>
+        public VehiclesController(IVehicleService service, IMapper mapper)
         {
-            _vehicleService = vehicleService;
+            _service = service;
+            _mapper = mapper;
         }
 
         /// <summary>
-        /// Creates a new vehicle record.
+        /// Adds a new vehicle for the current user.
         /// </summary>
-        /// <param name="dto">Vehicle data transfer object containing creation details.</param>
-        /// <returns>Returns 200 OK when the vehicle is successfully created.</returns>
-        [HttpPost("add")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult CreateVehicle([FromBody] VehicleRequestDto dto)
+        /// <param name="request">The vehicle creation request.</param>
+        /// <returns>An <see cref="IActionResult"/> containing the new vehicle id.</returns>
+        [HttpPost]
+        public async Task<IActionResult> AddVehicle(CreateVehicleRequest request)
         {
-            // Extract owner user ID from gateway header
-            if (Request.Headers.TryGetValue("X-User-Id", out var userId))
+            var ownerUserId = Request.Headers.TryGetValue("X-User-Id", out var userId) ? userId.ToString() : string.Empty;
+            ownerUserId = "owner1";
+
+            if (string.IsNullOrEmpty(ownerUserId))
             {
-                dto.OwnerUserId = userId.ToString();
-            }
-            else
-            {
-                throw new ApplicationException("X-User-Id is missing in the request headers.");
+                return BadRequest("Missing X-User-Id header.");
             }
 
-            var vehicle = VehicleMapper.ToDomain(dto);
+            request.OwnerUserId = ownerUserId;
 
-            _vehicleService.AddVehicle(vehicle);
+            var vehicle = _mapper.Map<Vehicle>(request);
 
-            return Ok("Vehicle added successfully.");
+            await _service.AddVehicleAsync(vehicle);
+            
+            return Ok(new { vehicle.Id });
         }
 
         /// <summary>
-        /// Searches for vehicles using optional filter criteria.
+        /// Searches for vehicles using the provided query parameters.
         /// </summary>
-        /// <param name="type">Optional vehicle type filter.</param>
-        /// <param name="manufacturer">Optional manufacturer filter.</param>
-        /// <param name="model">Optional model filter.</param>
-        /// <param name="year">Optional year filter.</param>
-        /// <returns>Returns a list of vehicles matching the provided criteria.</returns>
-        [HttpGet("search")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public IActionResult SearchVehicles(
-            [FromQuery] string? type,
-            [FromQuery] string? manufacturer,
-            [FromQuery] string? model,
-            [FromQuery] int? year)
+        /// <param name="request">The search request parameters.</param>
+        /// <returns>An <see cref="IActionResult"/> containing matching vehicles.</returns>
+        [HttpGet]
+        public async Task<IActionResult> Search([FromQuery] SearchVehiclesRequest request)
         {
-            var response = _vehicleService.Search(type, manufacturer, model, year).Select(VehicleMapper.MapToDto)
-                .ToList(); 
+            var vehicleType = Enum.TryParse<VehicleType>(request.Type, true, out var parsedType) ? parsedType : (VehicleType?)null;
+            var vehicles = await _service.SearchAsync(vehicleType, request.Manufacturer, request.Model, request.Year);
 
-            return Ok(response);
+            var result = _mapper.Map<List<VehicleResponse>>(vehicles);
+
+            return Ok(result);
         }
     }
 }

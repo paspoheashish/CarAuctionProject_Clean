@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/Tests/">
+    <Project Path="../CarAuctionManagementSystem.Infrastructure.Tests/CarAuctionManagementSystem.Infrastructure.Tests.csproj" Id="a841f24b-7aae-4ad7-a86b-d745c01e8c09" />
+    <Project Path="../CarAuctionManagementSystem.Tests/CarAuctionManagementSystem.Application.Tests.csproj" Id="93f25aed-5f77-4c8d-b327-6c789e8ccc14" />
+  </Folder>
+  <Project Path="../CarAuctionManagementSystem.Application/CarAuctionManagementSystem.Application.csproj" />
+  <Project Path="../CarAuctionManagementSystem.Domain/CarAuctionManagementSystem.Domain.csproj" />
+  <Project Path="../CarAuctionManagementSystem.Infrastructure/CarAuctionManagementSystem.Infrastructure.csproj" />
+  <Project Path="CarAuctionManagementSystem.csproj" />
+</Solution>

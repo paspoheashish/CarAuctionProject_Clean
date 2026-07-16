@@ -7,11 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+    <PackageReference Include="AutoMapper" Version="16.2.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.2.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="10.2.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="10.2.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="10.2.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CarAuctionManagementSystem.Application\CarAuctionManagementSystem.Application.csproj" />
+    <ProjectReference Include="..\CarAuctionManagementSystem.Domain\CarAuctionManagementSystem.Domain.csproj" />
     <ProjectReference Include="..\CarAuctionManagementSystem.Infrastructure\CarAuctionManagementSystem.Infrastructure.csproj" />
   </ItemGroup>
 

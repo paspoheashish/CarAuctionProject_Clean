@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
 
 namespace CarAuctionManagementSystem.MiddleWare
 {
@@ -58,3 +57,4 @@ namespace CarAuctionManagementSystem.MiddleWare
     }
 
 }
+

@@ -1,118 +1,133 @@
-﻿using CarAuctionManagementSystem.Application.Interfaces;
+﻿using AutoMapper;
+using CarAuctionManagementSystem.Application.Interfaces.Services;
 using CarAuctionManagementSystem.Application.Services;
-using CarAuctionManagementSystem.DTOs;
-using CarAuctionManagementSystem.Mappers;
+using CarAuctionManagementSystem.Application.UseCases.Auctions.Query;
+using CarAuctionManagementSystem.Application.UseCases.Bids.Query;
+using CarAuctionManagementSystem.Domain.Entities;
+using CarAuctionManagementSystem.DTOs.Auctions;
+using CarAuctionManagementSystem.DTOs.Vehicles;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarAuctionManagementSystem.Controllers
 {
     /// <summary>
-    /// Provides HTTP endpoints for auction-related operations.
-    /// Delegates business logic to the application service layer.
+    /// Controller for managing auctions endpoints.
     /// </summary>
     [ApiController]
-    [Route("api/[controller]")]
-    public class AuctionController : ControllerBase
+    [Route("api/auctions")]
+    public class AuctionsController : ControllerBase
     {
-        private readonly IAuctionService _auctionService;
+        private readonly IMediator _mediator;
+        private readonly IAuctionService _service;
+        private readonly IMapper _mapper;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AuctionController"/> class.
+        /// Initializes a new instance of the <see cref="AuctionsController"/> class.
         /// </summary>
-        /// <param name="auctionService">Service responsible for auction operations.</param>
-        public AuctionController(IAuctionService auctionService)
+        /// <param name="service">The auction service.</param>
+        /// <param name="mapper">The AutoMapper instance.</param>
+        /// <param name="mediator">The MediatR mediator.</param>
+        public AuctionsController(IAuctionService service, IMapper mapper, IMediator mediator)
         {
-            _auctionService = auctionService;
+            _service = service;
+            _mapper = mapper;
+            _mediator = mediator;
         }
 
         /// <summary>
-        /// Retrieves all auctions (active + inactive).
+        /// Retrieves all auctions.
         /// </summary>
-        /// <returns>Returns a list of all auctions.</returns>
+        /// <returns>An <see cref="IActionResult"/> containing a list of auctions.</returns>
         [HttpGet("all")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<AuctionResponseDto>> GetAuctions()
+        public async Task<IActionResult> GetAuctions()
         {
-            var auctions = _auctionService.GetAuctions(isActive: false);
+            var auctions = await _service.GetAllAsync();
 
-            var response = auctions
-                .Select(AuctionMapper.MapToDto)
-                .ToList();
+            var response = _mapper.Map<List<AuctionResponse>>(auctions);
 
             return Ok(response);
         }
 
         /// <summary>
-        /// Retrieves only active auctions.
+        /// Retrieves all active auctions.
         /// </summary>
-        /// <returns>Returns a list of active auctions.</returns>
+        /// <returns>An <see cref="IActionResult"/> containing a list of active auctions.</returns>
         [HttpGet("allactive")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<IEnumerable<AuctionResponseDto>> GetActiveAuctions()
+        public async Task<IActionResult> GetActiveAuctions()
         {
-            var auctions = _auctionService.GetAuctions(isActive: true);
-
-            var response = auctions
-                .Select(AuctionMapper.MapToDto)
-                .ToList();
-
+            var query = new GetAllActiveAuctionsQuery();
+            var auctions = await _mediator.Send(query);
+            var response = _mapper.Map<List<AuctionResponse>>(auctions);
             return Ok(response);
         }
 
         /// <summary>
-        /// Retrieves a specific auction by vehicle ID.
+        /// Retrieves a specific auction by its identifier.
         /// </summary>
-        /// <param name="vehicleId">The ID of the vehicle associated with the auction.</param>
-        /// <returns>Returns the auction details.</returns>
-        [HttpGet("{vehicleId}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<AuctionResponseDto> GetAuction(string vehicleId)
+        /// <param name="auctionId">The auction identifier.</param>
+        /// <returns>An <see cref="IActionResult"/> containing the auction details.</returns>
+        [HttpGet("{auctionId}")]
+        public async Task<IActionResult> GetAuction(int auctionId)
         {
-            var auction = _auctionService.GetAuction(vehicleId);
-            var response = AuctionMapper.MapToDto(auction);
-
+            var query = new GetAuctionByIdQuery(auctionId);
+            var auction = await _mediator.Send(query);
+            var response = _mapper.Map<AuctionResponse>(auction);
             return Ok(response);
         }
 
         /// <summary>
-        /// Starts an auction for a given vehicle.
+        /// Retrieves an auction by the associated vehicle identifier.
         /// </summary>
-        /// <param name="vehicleId">Vehicle ID for which the auction should start.</param>
-        /// <returns>Returns confirmation message.</returns>
+        /// <param name="vehicleId">The vehicle identifier.</param>
+        /// <returns>An <see cref="IActionResult"/> containing the auction for the vehicle.</returns>
+        [HttpGet("vehicle/{vehicleId}")]
+        public async Task<IActionResult> GetAuctionByVehicleId(int vehicleId)
+        {
+            var query = new GetAuctionByVehicleIdQuery(vehicleId);
+            var auction = await _mediator.Send(query);
+            var response = _mapper.Map<AuctionResponse>(auction);
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// Starts a new auction for the specified vehicle.
+        /// </summary>
+        /// <param name="startAuctionRequest">Request object containing the vehicle id and other start details.</param>
+        /// <returns>An <see cref="IActionResult"/> indicating the result of the operation.</returns>
         [HttpPost("start")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public IActionResult StartAuction([FromBody] string vehicleId)
+        public async Task<IActionResult> Start(StartAuctionRequest startAuctionRequest)
         {
-            var ownerUserId = Request.Headers.TryGetValue("X-User-Id", out var userId)
-                ? userId.ToString()
-                : string.Empty;
+            var ownerUserId = Request.Headers.TryGetValue("X-User-Id", out var userId) ? userId.ToString() : string.Empty;
+            ownerUserId = "owner1";
 
-            if(string.IsNullOrEmpty(ownerUserId))
+            if (string.IsNullOrEmpty(ownerUserId))
             {
                 return BadRequest("Missing X-User-Id header.");
-            };
+            }
 
-            _auctionService.StartAuction(vehicleId, ownerUserId);
-
-            return Ok($"Auction started for VehicleId {vehicleId}");
+            await _service.StartAuctionAsync(startAuctionRequest.VehicleId, ownerUserId);
+            return Ok();
         }
 
         /// <summary>
-        /// Closes an auction for a given vehicle.
+        /// Closes an existing auction.
         /// </summary>
-        /// <param name="vehicleId">Vehicle ID for which the auction should close.</param>
-        /// <returns>Returns confirmation message.</returns>
+        /// <param name="closeAuctionRequest">Request object containing the auction id to close.</param>
+        /// <returns>An <see cref="IActionResult"/> indicating the result of the operation.</returns>
         [HttpPost("close")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public IActionResult CloseAuction([FromBody] string vehicleId)
+        public async Task<IActionResult> Close(CloseAuctionRequest closeAuctionRequest)
         {
-            var ownerUserId = Request.Headers.TryGetValue("X-User-Id", out var userId)
-                ? userId.ToString()
-                : string.Empty;
+            var ownerUserId = Request.Headers.TryGetValue("X-User-Id", out var userId) ? userId.ToString() : string.Empty;
+            ownerUserId = "owner1";
 
-            _auctionService.CloseAuction(vehicleId, ownerUserId);
+            if (string.IsNullOrEmpty(ownerUserId))
+            {
+                return BadRequest("Missing X-User-Id header.");
+            }
 
-            return Ok($"Auction closed for VehicleId {vehicleId}");
+            await _service.CloseAuctionAsync(closeAuctionRequest.AuctionId, ownerUserId);
+            return Ok();
         }
     }
 }
