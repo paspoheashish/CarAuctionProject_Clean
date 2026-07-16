@@ -3,16 +3,45 @@ CarAuctionProject_Clean
 
 # Folder Tree
 ```text
+1. CarAuctionManagementSystem (Presentation Layer)
+--------------------------------------------------
 CarAuctionManagementSystem/
-├── CarAuctionManagementSystem.slnx
-├── Program.cs
-├── README.md
-├── DependencyInjection/
-│   └── PresentationServiceRegistration.cs
+│
+├── CarAuctionManagementSystem.csproj
+├── CarAuctionManagementSystem.http
+│
 ├── Controllers/
 │   ├── AuctionsController.cs
 │   ├── BidsController.cs
 │   └── VehiclesController.cs
+│
+├── DTOs/
+│   ├── Auctions/
+│   ├── Bids/
+│   └── Vehicles/
+│
+├── Mappers/
+│   ├── AuctionMappingProfile.cs
+│   ├── BidMappingProfile.cs
+│   └── VehicleMappingProfile.cs
+│
+├── MiddleWare/
+│   └── ExceptionMiddleware.cs
+│
+├── Properties/
+│   └── launchSettings.json
+│
+├── Program.cs
+├── appsettings.json
+└── appsettings.Development.json
+
+
+2. Application Layer
+--------------------
+CarAuctionManagementSystem.Application/
+│
+├── CarAuctionManagementSystem.Application.csproj
+│
 ├── DTOs/
 │   ├── Auctions/
 │   │   ├── AuctionResponse.cs
@@ -25,63 +54,85 @@ CarAuctionManagementSystem/
 │       ├── CreateVehicleRequest.cs
 │       ├── SearchVehiclesRequest.cs
 │       └── VehicleResponse.cs
+│
+├── Interfaces/
+│   ├── IAuctionService.cs
+│   ├── IBidService.cs
+│   └── IVehicleService.cs
+│
 ├── Mapping/
-│   ├── AuctionMappingProfile .cs
+│   ├── AuctionMappingProfile.cs
 │   ├── BidMappingProfile.cs
 │   └── VehicleMappingProfile.cs
-├── MiddleWare/
-│   └── ExceptionMiddleware.cs
-├── CarAuctionManagementSystem.Application/
-│   ├── CarAuctionManagementSystem.Application.csproj
-│   ├── DependencyInjection/
-│   │   └── ApplicationServiceRegistration.cs
-│   ├── Interfaces/
-│   │   ├── Repositories/
-│   │   │   ├── IAuctionRepository.cs
-│   │   │   ├── IBidRepository.cs
-│   │   │   ├── IUnitOfWork.cs
-│   │   │   └── IVehicleRepository.cs
-│   │   └── Services/
-│   │       ├── IAuctionService.cs
-│   │       └── IVehicleService.cs
-│   ├── Services/
-│   │   ├── AuctionService.cs
-│   │   └── VehicleService.cs
-│   └── UseCases/
-│       ├── Auctions/
-│       │   └── Query/
-│       │       ├── GetAllActiveAuctionsHandler .cs
-│       │       ├── GetAuctionByIdHandler .cs
-│       │       └── GetAuctionByVehicleIdHandler .cs
-│       └── Bids/
-│           ├── Command/
-│           │   └── PlaceBidHandler.cs
-│           └── Query/
-│               └── GetBidsHandler.cs
-├── CarAuctionManagementSystem.Domain/
-│   ├── CarAuctionManagementSystem.Domain.csproj
-│   ├── Entities/
-│   │   ├── Auction.cs
-│   │   ├── Bid.cs
-│   │   ├── Vehicle.cs
-│   │   ├── Hatchback.cs
-│   │   ├── Sedan.cs
-│   │   ├── SUV.cs
-│   │   └── Truck.cs
-│   └── Enums/
-│       └── VehicleType.cs
-├── CarAuctionManagementSystem.Infrastructure/
-│   ├── CarAuctionManagementSystem.Infrastructure.csproj
-│   ├── Database/
-│   │   └── InMemoryDatabase.cs
-│   └── DependencyInjection/
-│       └── InfrastructureServiceRegistration.cs
-│   └── Repositories/
-│       ├── AuctionRepository.cs
-│       ├── BidRepository.cs
-│       ├── UnitOfWork.cs
-│       └── VehicleRepository.cs
-└── .vscode/ (optional local config)
+│
+├── Services/
+│   ├── AuctionService.cs
+│   ├── BidService.cs
+│   └── VehicleService.cs
+│
+└── UseCases/
+    ├── Auctions/
+    ├── Bids/
+    └── Vehicles/
+
+
+3. Infrastructure Layer
+-----------------------
+CarAuctionManagementSystem.Infrastructure/
+│
+├── CarAuctionManagementSystem.Infrastructure.csproj
+│
+├── Database/
+│   └── InMemoryDatabase.cs
+│
+├── DependencyInjection/
+│   └── InfrastructureServiceRegistration.cs
+│
+├── Repositories/
+│   ├── AuctionRepository.cs
+│   ├── BidRepository.cs
+│   └── VehicleRepository.cs
+│
+└── UnitOfWork/
+    └── UnitOfWork.cs
+
+
+4. Domain Layer
+---------------
+CarAuctionManagementSystem.Domain/
+│
+├── CarAuctionManagementSystem.Domain.csproj
+│
+├── Entities/
+│   ├── Auction.cs
+│   ├── Bid.cs
+│   └── Vehicle.cs
+│
+├── Enums/
+│   ├── AuctionStatus.cs
+│   └── VehicleType.cs
+│
+└── ValueObjects/
+    └── Money.cs
+
+
+5. Testing Layer
+----------------
+CarAuctionManagementSystem.Infrastructure.Tests/
+│   ├── CarAuctionManagementSystem.Infrastructure.Tests.csproj
+│   └── (test classes)
+│
+CarAuctionManagementSystem.Tests/
+   ├── CarAuctionManagementSystem.Tests.csproj
+   └── (test classes)
+
+
+Root Files
+----------
+.gitattributes
+.gitignore
+README.md
+
 ```text
 
 
