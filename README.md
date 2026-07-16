@@ -3,8 +3,11 @@ CarAuctionProject_Clean
 
 # Folder Tree
 CarAuctionProject_Clean/
+
 │
+
 ├── CarAuctionManagementSystem.Application/
+
 │   ├── CarAuctionManagementSystem.Application.csproj
 │   │
 │   ├── DTOs/
