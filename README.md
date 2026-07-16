@@ -2,6 +2,7 @@
 CarAuctionProject_Clean
 
 # Folder Tree
+```text
 CarAuctionProject_Clean/
 │
 ├── CarAuctionManagementSystem.Application/
@@ -94,7 +95,7 @@ CarAuctionProject_Clean/
 ├── .gitattributes
 ├── .gitignore
 └── README.md
-
+```text
 
 
 # CarAuctionManagementSystem
