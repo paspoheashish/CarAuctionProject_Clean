@@ -25,64 +25,123 @@ CarAuctionProject_Clean/
 │   │   │
 
 │   │   ├── Bids/
+
 │   │   │   ├── BidResponse.cs
+
 │   │   │   └── PlaceBidRequest.cs
+
 │   │   │
+
 │   │   └── Vehicles/
+
 │   │       ├── CreateVehicleRequest.cs
+
 │   │       ├── SearchVehiclesRequest.cs
+
 │   │       └── VehicleResponse.cs
+
 │   │
+
 │   ├── Interfaces/
+
 │   │   ├── IAuctionService.cs
+
 │   │   ├── IBidService.cs
+
 │   │   └── IVehicleService.cs
+
 │   │
+
 │   ├── Mapping/
+
 │   │   ├── AuctionMappingProfile.cs
+
 │   │   ├── BidMappingProfile.cs
+
 │   │   └── VehicleMappingProfile.cs
+
 │   │
+
 │   ├── Services/
+
 │   │   ├── AuctionService.cs
+
 │   │   ├── BidService.cs
+
 │   │   └── VehicleService.cs
+
 │   │
+
 │   └── UseCases/
+
 │       ├── Auctions/
+
 │       ├── Bids/
+
 │       └── Vehicles/
+
 │
+
 │
+
 ├── CarAuctionManagementSystem.Domain/
+
 │   ├── CarAuctionManagementSystem.Domain.csproj
+
 │   │
+
 │   ├── Entities/
+
 │   │   ├── Auction.cs
+
 │   │   ├── Bid.cs
+
 │   │   └── Vehicle.cs
+
 │   │
+
 │   ├── Enums/
+
 │   │   ├── AuctionStatus.cs
+
 │   │   └── VehicleType.cs
+
 │   │
+
 │   └── ValueObjects/
+
 │       └── Money.cs
+
 │
+
 │
+
 ├── CarAuctionManagementSystem.Infrastructure/
+
 │   ├── CarAuctionManagementSystem.Infrastructure.csproj
+
 │   │
+
 │   ├── Database/
+
 │   │   └── InMemoryDatabase.cs
+
 │   │
+
 │   ├── DependencyInjection/
+
 │   │   └── InfrastructureServiceRegistration.cs
+
 │   │
+
 │   ├── Repositories/
+
 │   │   ├── AuctionRepository.cs
+
 │   │   ├── BidRepository.cs
+
 │   │   └── VehicleRepository.cs
+
 │   │
 │   └── UnitOfWork/
 │       └── UnitOfWork.cs
