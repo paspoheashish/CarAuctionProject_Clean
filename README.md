@@ -94,7 +94,10 @@ CarAuctionManagementSystem/
 
 # CarAuctionManagementSystem
 
-A simple in-memory car auction management API built with .NET 8. The solution demonstrates a clean architecture split into Presentation, Application, Domain and Infrastructure layers, with MediatR for use-case handlers and AutoMapper for DTO mappings.
+A simple in-memory car auction management API built with .NET 8.
+The solution demonstrates a clean architecture split into
+Presentation, Application, Domain and Infrastructure layers,
+with MediatR for use-case handlers and AutoMapper for DTO mappings.
 
 ## Project structure
 
@@ -140,7 +143,8 @@ Run with dotnet CLI:
 
 - Repositories are registered as singletons and use `InMemoryDatabase` which is seeded with sample vehicles.
 
-- Exception handling is centralized via `MiddleWare/ExceptionMiddleware.cs` which converts ApplicationException to 400 and other exceptions to 500 with Problem Details.
+- Exception handling is centralized via `MiddleWare/ExceptionMiddleware.cs`
+  which converts ApplicationException to 400 and other exceptions to 500 with Problem Details.
 
 ## Seed data
 
@@ -212,9 +216,11 @@ Bids
   - Infrastructure layer contains repository implementations and the in-memory database.
   - Domain layer contains entities and enums.
 
-- MediatR is used for bids and auction queries; Application Services (IAuctionService / IVehicleService) contain business workflows for starting/closing auctions and adding vehicles.
+- MediatR is used for bids and auction queries; Application Services (IAuctionService / IVehicleService)
+  contain business workflows for starting/closing auctions and adding vehicles.
 
 ## Known issues / TODOs
 
-- Controllers currently read `X-User-Id` from headers but then override it with a hardcoded value (`owner1`). Update controllers to trust the header value and validate it properly.
+- Controllers currently read `X-User-Id` from headers but then override it with a hardcoded value (`owner1`).
+  Update controllers to trust the header value and validate it properly.
 - In-memory persistence is for demo only. Replace with EF Core or another persistent store for production.
